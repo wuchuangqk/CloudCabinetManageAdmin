@@ -17,6 +17,7 @@ import Sidebar from './components/Sidebar/index.vue'
 import Navbar from './components/Navbar.vue'
 import { computed } from 'vue'
 import { useAppStore } from '../../store/app';
+import AppMain from './components/AppMain.vue'
 
 const app = useAppStore()
 const classObj = computed(() => {

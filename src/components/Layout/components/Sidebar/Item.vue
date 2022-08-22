@@ -5,21 +5,19 @@
   </template>
   <span v-if="title">{{ title }}</span>
 </template>
-<script>
+<script lang="ts">
 export default {
-  name: 'MenuItem',
-  functional: true,
-  props: {
-    icon: {
-      type: String,
-      default: ''
-    },
-    title: {
-      type: String,
-      default: ''
-    }
-  },
+  name: 'MenuItem'
 }
+</script>
+<script lang="ts" setup>
+withDefaults(defineProps<{
+  icon?: string,
+  title?: string,
+}>(), {
+  icon: '',
+  title: '',
+})
 </script>
 
 <style scoped>

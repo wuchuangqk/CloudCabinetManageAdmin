@@ -17,9 +17,9 @@ const doLogout = () => {
     resolve({})
   })
 }
-export const useAppStore = defineStore('app', () => {
+export const useUserStore = defineStore('user', () => {
   // 用户信息
-  const userInfo = ref<IUserInfo>(JSON.parse(localStorage.getItem(KEY_NAME.USER_INFO) || '') || {} as IUserInfo)
+  const userInfo = ref<IUserInfo>(JSON.parse(localStorage.getItem(KEY_NAME.USER_INFO) || '{}'))
   // 登录
   const login = (username: string, password: string) => {
     return new Promise<void>((resolve, reject) => {
