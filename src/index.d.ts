@@ -1,3 +1,6 @@
-interface IRoute {
-  
+/**
+ * 用户信息
+ */
+interface IUserInfo {
+
 }

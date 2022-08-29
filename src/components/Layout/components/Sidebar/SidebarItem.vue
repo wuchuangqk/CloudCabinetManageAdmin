@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!item.hidden">
+  <div v-if="isShow">
     <template
       v-if="hasOneShowingChild(item.children, item) && (!onlyOneChild.children || onlyOneChild.noShowingChildren) && !item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
@@ -27,7 +27,7 @@ export default {
 import { isExternal } from '../../../../utils/validate'
 import Item from './Item.vue'
 import AppLink from './Link.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = withDefaults(defineProps<{
   item: any,
@@ -67,4 +67,9 @@ const resolvePath = (routePath: string) => {
   }
   return props.basePath + '/' + routePath
 }
+const isShow = computed(() => {
+  if (!props.item.meta) return true
+  if (props.item.meta.hidden === true) return false
+  return true
+})
 </script>

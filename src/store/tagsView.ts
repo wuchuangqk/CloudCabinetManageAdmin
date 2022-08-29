@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { RouteRecordRaw } from 'vue-router'
 
-export const useTagsStore = defineStore('tags', () => {
+const useTagsStore = defineStore('tags', () => {
   const visitedViews = ref<any[]>([])
   const cachedViews = ref<string[]>([])
   const addView = (view: RouteRecordRaw) => {
@@ -121,3 +121,5 @@ export const useTagsStore = defineStore('tags', () => {
     delAllViews
   }
 })
+
+export default useTagsStore

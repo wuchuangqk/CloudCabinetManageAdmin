@@ -9,5 +9,9 @@ export const KEY_NAME = {
   /**
    * 用户信息
    */
-  USER_INFO: 'userInfo'
+  USER_INFO: 'userInfo',
+  /**
+   * 权限
+   */
+  PERMISSION: 'permission'
 }

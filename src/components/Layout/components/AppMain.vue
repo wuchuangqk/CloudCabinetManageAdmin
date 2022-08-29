@@ -15,7 +15,7 @@ export default {
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useTagsStore } from '../../../store/tagsView'
+import useTagsStore from '../../../store/tagsView'
 
 const tags = useTagsStore()
 const cachedViews = computed(() => {

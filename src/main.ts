@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import { createPinia } from "pinia";
-import { router } from './router/index'
+import router from './router/index'
 import './router/interceptor'
 import 'nprogress/nprogress.css' // progress bar style
 import ElementPlus from 'element-plus'

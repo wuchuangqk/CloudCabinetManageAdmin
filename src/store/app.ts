@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import {ref} from 'vue'
 import Cookies from 'js-cookie'
 
-export const useAppStore = defineStore('app', () => {
+const useAppStore = defineStore('app', () => {
   const sidebar = ref({
     // @ts-ignore
     opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
@@ -36,3 +36,5 @@ export const useAppStore = defineStore('app', () => {
     toggleDevice
   }
 })
+
+export default useAppStore

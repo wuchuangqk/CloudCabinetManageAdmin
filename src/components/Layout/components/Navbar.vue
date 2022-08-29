@@ -1,58 +1,35 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
+    <Hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
       @toggleClick="app.toggleSideBar()" />
+    <Breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+    <el-button @click="logout">退出</el-button>
 
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
-
-    <div class="right-menu">
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
-        <div class="avatar-wrapper">
-          <!-- <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <router-link to="/profile/index">
-            <el-dropdown-item>Profile</el-dropdown-item>
-          </router-link>
-          <router-link to="/">
-            <el-dropdown-item>Dashboard</el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
-import { useAppStore } from '../../../store/app'
-import { useUserStore } from '../../../store/user'
+import useAppStore from '../../../store/app'
 import { useRouter, useRoute } from 'vue-router'
+import usePermissionStore from '@/store/permission'
 
 const app = useAppStore()
 const sidebar = app.sidebar
 
 const router = useRouter()
 const route = useRoute()
-const user = useUserStore()
+const permissionStore = usePermissionStore()
+const doLogout = () => {
+  return new Promise(resolve => {
+    resolve({})
+  })
+}
 const logout = async () => {
-  await user.logout()
-  router.push({
-    path: '/login',
-    query: {
-      redirect: route.fullPath
-    }
+  doLogout().then(() => {
+    permissionStore.resetAppRoutes()
+    router.push('/login')
   })
 }
 </script>
