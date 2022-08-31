@@ -1,5 +1,5 @@
 <template>
-  <section class="app-main">
+  <section>
     <router-view v-slot="{ Component }">
       <transition name="fade-transform" mode="out-in">
         <component :is="Component" />
@@ -15,7 +15,7 @@ export default {
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import useTagsStore from '../../../store/tagsView'
+import useTagsStore from '@/store/tagsView'
 
 const tags = useTagsStore()
 const cachedViews = computed(() => {
@@ -29,34 +29,9 @@ const key = computed(() => {
 
 <style lang="scss" scoped>
 .app-main {
-  /* 50= navbar  50  */
-  min-height: calc(100vh - 50px);
-  width: 100%;
+  padding-left: var(--sidebar-width);
+  padding-top: 80px;
+  transition: padding-left .28s;
   position: relative;
-  overflow: hidden;
-}
-
-.fixed-header+.app-main {
-  padding-top: 50px;
-}
-
-.hasTagsView {
-  .app-main {
-    /* 84 = navbar + tags-view = 50 + 34 */
-    min-height: calc(100vh - 84px);
-  }
-
-  .fixed-header+.app-main {
-    padding-top: 84px;
-  }
-}
-</style>
-
-<style lang="scss">
-// fix css style bug in open el-dialog
-.el-popup-parent--hidden {
-  .fixed-header {
-    padding-right: 15px;
-  }
 }
 </style>

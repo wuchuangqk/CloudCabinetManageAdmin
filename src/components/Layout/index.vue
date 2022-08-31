@@ -1,74 +1,35 @@
 <template>
-  <div :class="classObj" class="app-wrapper">
-    <!-- <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" /> -->
-    <Sidebar class="sidebar-container" />
-    <div class="main-container hasTagsView">
-      <div class="fixed-header">
-        <Navbar />
-        <!-- <tags-view v-if="needTagsView" /> -->
-      </div>
-      <app-main />
-    </div>
+  <div :class="{ 'hide-sidebar': appStore.sidebarClosed }">
+    <!-- 左侧导航栏 -->
+    <Sidebar class="sidebar" />
+    <!-- 头部导航 -->
+    <Navbar class="navbar" />
+    <!-- 主体内容区 -->
+    <AppMain class="app-main" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import Sidebar from './components/Sidebar/index.vue'
-import Navbar from './components/Navbar.vue'
-import { computed } from 'vue'
-import useAppStore from '../../store/app';
-import AppMain from './components/AppMain.vue'
+import Sidebar from './Sidebar.vue'
+import Navbar from './Navbar.vue'
+import AppMain from './AppMain.vue'
+import useAppStore from '@/store/app';
 
-const app = useAppStore()
-const classObj = computed(() => {
-  return {
-    hideSidebar: !app.sidebar.opened,
-    openSidebar: app.sidebar.opened,
-    withoutAnimation: app.sidebar.withoutAnimation,
-  }
-})
+const appStore = useAppStore()
 </script> 
 
 <style lang="scss" scoped>
-@import "@/styles/mixin.scss";
-@import "@/styles/variables.scss";
-
-.app-wrapper {
-  @include clearfix;
-  position: relative;
-  height: 100%;
-  width: 100%;
-
-  &.mobile.openSidebar {
-    position: fixed;
-    top: 0;
+.hide-sidebar {
+  .sidebar {
+    width: var(--sidebar-collapse-width);
   }
-}
 
-.drawer-bg {
-  background: #000;
-  opacity: 0.3;
-  width: 100%;
-  top: 0;
-  height: 100%;
-  position: absolute;
-  z-index: 999;
-}
+  .app-main {
+    padding-left: var(--sidebar-collapse-width);
+  }
 
-.fixed-header {
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 9;
-  width: calc(100% - #{$sideBarWidth});
-  transition: width 0.28s;
-}
-
-.hideSidebar .fixed-header {
-  width: calc(100% - 54px)
-}
-
-.mobile .fixed-header {
-  width: 100%;
+  .navbar {
+    left: var(--sidebar-collapse-width);
+  }
 }
 </style>

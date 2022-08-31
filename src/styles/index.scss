@@ -1,9 +1,11 @@
 @import './variables.scss';
-@import './mixin.scss';
 @import './transition.scss';
-@import './element-ui.scss';
 @import './sidebar.scss';
-@import './btn.scss';
+@import './variables.scss';
+@import 'normalize.css/normalize.css';
+@import 'element-plus/dist/index.css';
+@import '@mzx_qk/ui/dist/style.css';
+@import 'nprogress/nprogress.css'; // progress bar style
 
 body {
   height: 100%;
@@ -13,9 +15,6 @@ body {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
 }
 
-label {
-  font-weight: 700;
-}
 
 html {
   height: 100%;
@@ -32,14 +31,6 @@ html {
   box-sizing: inherit;
 }
 
-.no-padding {
-  padding: 0px !important;
-}
-
-.padding-content {
-  padding: 4px 0;
-}
-
 a:focus,
 a:active {
   outline: none;
@@ -51,38 +42,6 @@ a:hover {
   cursor: pointer;
   color: inherit;
   text-decoration: none;
-}
-
-div:focus {
-  outline: none;
-}
-
-.fr {
-  float: right;
-}
-
-.fl {
-  float: left;
-}
-
-.pr-5 {
-  padding-right: 5px;
-}
-
-.pl-5 {
-  padding-left: 5px;
-}
-
-.block {
-  display: block;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.inlineBlock {
-  display: block;
 }
 
 .clearfix {
@@ -188,4 +147,24 @@ aside {
 
 .multiselect--active {
   z-index: 1000 !important;
+}
+
+.el-breadcrumb__inner a {
+  font-weight: normal;
+}
+
+.flex {
+  display: flex;
+
+  &.col {
+    flex-direction: column;
+  }
+
+  &.between {
+    justify-content: space-between;
+  }
+
+  &.center {
+    align-items: center;
+  }
 }

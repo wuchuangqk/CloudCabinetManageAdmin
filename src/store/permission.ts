@@ -36,6 +36,7 @@ const usePermissionStore = defineStore('permission', () => {
     appRoutes.value = publicRoutes
     isComplete.value = false
   }
+
   // 是否已应用了权限
   const isComplete = ref(false)
 

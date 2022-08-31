@@ -1,9 +1,12 @@
 <template>
   <div class="navbar">
-    <Hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container"
-      @toggleClick="app.toggleSideBar()" />
-    <Breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
-    <el-button @click="logout">退出</el-button>
+    <div class="head-wrap">
+      <Hamburger />
+      <Breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+      <div class="right">
+        <el-button>退出</el-button>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -11,12 +14,8 @@
 <script lang="ts" setup>
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
-import useAppStore from '../../../store/app'
 import { useRouter, useRoute } from 'vue-router'
 import usePermissionStore from '@/store/permission'
-
-const app = useAppStore()
-const sidebar = app.sidebar
 
 const router = useRouter()
 const route = useRoute()
@@ -36,23 +35,23 @@ const logout = async () => {
 
 <style lang="scss" scoped>
 .navbar {
-  height: 50px;
-  overflow: hidden;
-  position: relative;
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  right: 0;
+  left: var(--sidebar-width);
+  transition: left 0.28s;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+  height: 80px;
 
-  .hamburger-container {
-    line-height: 46px;
-    height: 100%;
-    float: left;
-    cursor: pointer;
-    transition: background .3s;
-    -webkit-tap-highlight-color: transparent;
+  .head-wrap {
+    display: flex;
+    align-items: center;
+  }
 
-    &:hover {
-      background: rgba(0, 0, 0, .025)
-    }
+  .right {
+    flex: 1;
   }
 
   .breadcrumb-container {
