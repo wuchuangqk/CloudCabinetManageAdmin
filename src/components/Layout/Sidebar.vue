@@ -2,16 +2,14 @@
   <div class="sidebar">
     <Logo :collapse="appStore.sidebarClosed" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
-      <el-menu :collapse="appStore.sidebarClosed" :unique-opened="true" :collapse-transition="false" router
-        menu-trigger="click">
+      <el-menu :default-active="activeMenu" :collapse="appStore.sidebarClosed" :unique-opened="true"
+        :collapse-transition="false" router menu-trigger="click">
         <template v-for="route in filterShow(permission.appRoutes)">
           <el-menu-item v-if="notExpend(route)" :index="route.path">
-            <template #title>
-              <el-icon>
-                <Edit />
-              </el-icon>
-              <span>{{ route.meta?.title }}</span>
-            </template>
+            <el-icon>
+              <Edit />
+            </el-icon>
+            <template #title><span>{{ route.meta?.title }}</span></template>
           </el-menu-item>
           <el-sub-menu v-else :index="route.path">
             <template #title>
@@ -41,8 +39,9 @@ import { RouteRecordRaw, useRoute, useRouter } from 'vue-router'
 import useAppStore from '@/store/app';
 import usePermissionStore from '@/store/permission';
 import { Edit } from '@element-plus/icons-vue'
+import { computed } from 'vue';
 
-const router = useRouter()
+const route = useRoute()
 const appStore = useAppStore()
 const permission = usePermissionStore()
 
@@ -65,6 +64,9 @@ const notExpend = (route: RouteRecordRaw) => {
   }
   return false
 }
+const activeMenu = computed(() => {
+  return route.path
+})
 </script>
 <style lang="scss" scoped>
 .el-menu-item:hover {
@@ -85,8 +87,6 @@ const notExpend = (route: RouteRecordRaw) => {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-
-
 
   .el-menu-item.is-active {
     background-color: #0960bd;

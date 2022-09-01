@@ -256,6 +256,10 @@ onBeforeUnmount(() => {
     font-size: 12px;
     margin-left: 10px;
 
+    &:first-of-type {
+      margin-left: 0;
+    }
+
     // &:first-of-type {
     //   margin-left: 15px;
     // }
@@ -265,9 +269,9 @@ onBeforeUnmount(() => {
     // }
 
     &.router-link-active {
-      background-color: #42b983;
+      background-color: #0960bd;
       color: #fff;
-      border-color: #42b983;
+      border-color: #0960bd;
 
       &::before {
         content: '';

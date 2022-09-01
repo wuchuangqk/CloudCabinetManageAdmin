@@ -6,10 +6,17 @@
   --el-menu-hover-bg-color: #001529;
 }
 
+.el-table {
+  --el-table-header-bg-color: #fafafa; // 表头背景颜色
+  --el-table-header-text-color: #000000d9; // 表头文字颜色
+  --el-table-text-color: #000000d9;// 表格文字颜色
+}
 
 :root {
   --sidebar-width: 210px; // 侧边栏宽度
   --sidebar-collapse-width: 56px; // 侧边栏收起时宽度
   --menu-bg: #001529; // 菜单背景颜色
   --el-menu-base-level-padding: 16px;
+  // --el-color-primary: #1890ff; // 主题颜色
+  --el-border-radius-base: 2px;
 }

@@ -49,20 +49,20 @@ export const publicRoutes: RouteRecordRaw[] = [
   {
     path: "/test1",
     name: 'test1',
-    meta: { title: '公共页面2', icon: 'user' },
+    meta: { title: '报价管理', icon: 'user' },
     redirect: '/test1/index',
     component: Layout,
     children: [
       {
         path: 'index',
         name: 'test2',
-        meta: { title: '公共页面2-1', icon: 'user' },
+        meta: { title: '业务报价科目维护', icon: 'user' },
         component: () => import('@/pages/test/index.vue'),
       },
       {
         path: 'index2',
         name: 'test3',
-        meta: { title: '公共页面2-2', icon: 'user' },
+        meta: { title: '共配报价管理', icon: 'user' },
         component: () => import('@/pages/test/index.vue'),
       }
     ]
