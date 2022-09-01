@@ -30,7 +30,7 @@ import Hamburger from '@/components/Hamburger/index.vue'
 import { useRouter, useRoute } from 'vue-router'
 import usePermissionStore from '@/store/permission'
 import { SwitchButton, Lock, CaretBottom } from '@element-plus/icons-vue'
-import TagsView from './components/TagsView/index.vue'
+import TagsView from './TagsView.vue'
 
 const router = useRouter()
 const route = useRoute()

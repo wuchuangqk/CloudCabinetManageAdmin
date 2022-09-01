@@ -1,25 +1,31 @@
 <template>
   <div class="page">
     <div class="search">
-      <el-form :model="params" inline>
-        <el-form-item label="城市">
+      <el-form ref="formRef" :model="params" inline>
+        <el-form-item label="城市" prop="city">
           <el-input v-model="params.city" />
         </el-form-item>
-        <el-form-item label="城市">
-          <el-input v-model="params.city" />
+        <el-form-item label="站点" prop="name">
+          <el-select v-model="params.name">
+            <el-option v-for="option in options" :key="option.value" :label="option.label" :value="option.value">
+            </el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="城市">
-          <el-input v-model="params.city" />
+        <el-form-item label="状态" prop="state">
+          <el-select v-model="params.state">
+            <el-option v-for="option in options" :key="option.value" :label="option.label" :value="option.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button>重置</el-button>
+          <el-button @click="reset">重置</el-button>
           <el-button type="primary" :loading="loading" @click="search">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="card">
       <div class="toolbar">
-        <el-button type="primary">新增</el-button>
+        <el-button type="primary" @click="show = true">新增</el-button>
         <el-button>导出</el-button>
       </div>
       <el-table v-loading="loading" element-loading-text="加载中……" :data="tableData" stripe>
@@ -32,18 +38,24 @@
         <el-table-column prop="name" label="操作时间" />
       </el-table>
     </div>
+    <TestForm v-model="show" />
   </div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Tab } from '@mzx_qk/ui'
-import { useRouter } from 'vue-router';
-import { Loading } from '@element-plus/icons-vue'
+import TestForm from './components/TestForm.vue';
 
 const params = ref({
-  city: ''
+  city: '',
+  name: '',
+  state: ''
 })
 const loading = ref(false)
+const options = [
+  { label: '张三', value: 1 },
+  { label: '李四', value: 2 },
+  { label: '王五', value: 3 },
+]
 const tableData = ref([
   {
     date: '2016-05-03',
@@ -72,6 +84,14 @@ const search = () => {
     loading.value = false
   }, 2000);
 }
+
+const formRef = ref()
+const reset = () => {
+  formRef.value.resetFields()
+  search()
+}
+
+const show = ref(false)
 </script>
 
 <style lang="scss" scoped>

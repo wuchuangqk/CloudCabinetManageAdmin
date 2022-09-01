@@ -1,12 +1,8 @@
 <template>
   <div class="sidebar-logo-container" :class="{ 'collapse': collapse }">
-    <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-      <img v-if="logo" :src="logo" class="sidebar-logo">
-      <h1 v-else class="sidebar-title">{{ appName }} </h1>
-    </router-link>
-    <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-      <img v-if="logo" :src="logo" class="sidebar-logo">
-      <h1 class="sidebar-title">{{ appName }} </h1>
+    <router-link class="sidebar-logo-link" to="/">
+      <img :src="logo" class="sidebar-logo">
+      <h1 v-show="!collapse" class="sidebar-title">{{ appName }} </h1>
     </router-link>
   </div>
 </template>
@@ -24,25 +20,18 @@ const logo = 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.pn
 </script>
 
 <style lang="scss" scoped>
-.sidebarLogoFade-enter-active {
-  transition: opacity 1.5s;
-}
-
-.sidebarLogoFade-enter,
-.sidebarLogoFade-leave-to {
-  opacity: 0;
-}
-
 .sidebar-logo-container {
   position: relative;
   background: var(--menu-bg);
-  padding-left: var(--el-menu-base-level-padding);
+  padding-left: 10px;
+  overflow: hidden;
 
   & .sidebar-logo-link {
     display: flex;
     align-items: center;
     height: 50px;
     overflow: hidden;
+    width: 200px;
 
     & .sidebar-logo {
       width: 32px;
@@ -55,16 +44,11 @@ const logo = 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.pn
       font-weight: 600;
       line-height: 50px;
       font-size: 14px;
-      font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
-      vertical-align: middle;
+      margin: 0;
     }
   }
 
   &.collapse {
-    padding-left: 0;
-    display: flex;
-    justify-content: center;
-
     .sidebar-logo {
       margin-right: 0px;
     }
