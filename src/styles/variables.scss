@@ -1,13 +1,15 @@
 /* 覆盖el-menu颜色变量 */
 .el-menu {
-  --el-menu-bg-color: #304156;
-  --el-menu-text-color: #bfcbd9;
-  --el-menu-active-color: #409EFF;
+  --el-menu-bg-color: #001529;
+  --el-menu-text-color: #ffffffb3;
+  --el-menu-active-color: #fff;
+  --el-menu-hover-bg-color: #001529;
 }
 
 
 :root {
   --sidebar-width: 210px; // 侧边栏宽度
-  --sidebar-collapse-width: 65px; // 侧边栏收起时宽度
-  --menu-bg: #304156; // 菜单背景颜色
+  --sidebar-collapse-width: 56px; // 侧边栏收起时宽度
+  --menu-bg: #001529; // 菜单背景颜色
+  --el-menu-base-level-padding: 16px;
 }

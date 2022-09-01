@@ -2,20 +2,30 @@
   <div class="sidebar">
     <Logo :collapse="appStore.sidebarClosed" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
-      <el-menu :default-active="activeMenu" :collapse="appStore.sidebarClosed" :unique-opened="true" :collapse-transition="false"
-        @select="nav">
-        <el-sub-menu v-for="route in filterShow(permission.appRoutes)" :key="route.name" :index="route.path">
-          <template #title>
-            <el-icon>
-              <Edit />
-            </el-icon>
-            <span>{{ route.meta?.title }}</span>
-          </template>
-          <el-menu-item v-for="child in filterShow(route.children || [])" :key="child.name"
-            :index="setChildPath(route.path, child.path)">
-            <span>{{ child.meta?.title }}</span>
+      <el-menu :collapse="appStore.sidebarClosed" :unique-opened="true" :collapse-transition="false" router
+        menu-trigger="click">
+        <template v-for="route in filterShow(permission.appRoutes)">
+          <el-menu-item v-if="notExpend(route)" :index="route.path">
+            <template #title>
+              <el-icon>
+                <Edit />
+              </el-icon>
+              <span>{{ route.meta?.title }}</span>
+            </template>
           </el-menu-item>
-        </el-sub-menu>
+          <el-sub-menu v-else :index="route.path">
+            <template #title>
+              <el-icon>
+                <Edit />
+              </el-icon>
+              <span>{{ route.meta?.title }}</span>
+            </template>
+            <el-menu-item v-for="child in filterShow(route.children || [])" :key="child.name"
+              :index="setChildPath(route.path, child.path)">
+              <span>{{ child.meta?.title }}</span>
+            </el-menu-item>
+          </el-sub-menu>
+        </template>
       </el-menu>
     </el-scrollbar>
   </div>
@@ -32,21 +42,10 @@ import useAppStore from '@/store/app';
 import usePermissionStore from '@/store/permission';
 import { Edit } from '@element-plus/icons-vue'
 
-const route = useRoute()
 const router = useRouter()
 const appStore = useAppStore()
 const permission = usePermissionStore()
-const activeMenu = (): string => {
-  const { meta, path } = route
-  // if set path, the sidebar will highlight the path you set
-  if (meta.activeMenu) {
-    return meta.activeMenu as string
-  }
-  return path
-}
-const nav = (path: string) => {
-  router.push(path)
-}
+
 // meta.hidden 表示路由无需在菜单上显示
 const filterShow = (routes: RouteRecordRaw[]) => {
   return routes.filter((route) => {
@@ -60,19 +59,17 @@ const setChildPath = (parentPath: string, childPath: string) => {
   childPath = childPath.startsWith('/') ? childPath : '/' + childPath
   return parentPath + childPath
 }
+const notExpend = (route: RouteRecordRaw) => {
+  if (!route.children || (route.meta && route.meta.notExpend)) {
+    return true
+  }
+  return false
+}
 </script>
 <style lang="scss" scoped>
-$menuText: #bfcbd9;
-$menuActiveText: #409EFF;
-$subMenuActiveText: #f4f4f5;
-
-$menuBg: #304156;
-$menuHover: #263445;
-
-$subMenuBg: #1f2d3d;
-$subMenuHover: #001528;
-
-$sideBarWidth: 210px;
+.el-menu-item:hover {
+  color: var(--el-menu-active-color);
+}
 
 .sidebar {
   transition: width 0.28s;
@@ -88,6 +85,24 @@ $sideBarWidth: 210px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+
+
+
+  .el-menu-item.is-active {
+    background-color: #0960bd;
+  }
+
+  ::v-deep(.el-sub-menu__title:hover) {
+    color: var(--el-menu-active-color);
+  }
+
+  ::v-deep(.el-sub-menu.is-active .el-sub-menu__title) {
+    color: var(--el-menu-active-color);
+  }
+
+  .el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger:hover {
+    color: var(--el-menu-active-color);
+  }
 
   // reset element-ui css
   .horizontal-collapse-transition {
@@ -129,28 +144,6 @@ $sideBarWidth: 210px;
     border: none;
     height: 100%;
     width: 100% !important;
-  }
-
-  // menu hover
-  .submenu-title-noDropdown,
-  .el-sub-menu__title {
-    &:hover {
-      background-color: $menuHover  !important;
-    }
-  }
-
-  .is-active>.el-sub-menu__title {
-    color: $subMenuActiveText  !important;
-  }
-
-  & .nest-menu .el-sub-menu>.el-sub-menu__title,
-  & .el-sub-menu .el-menu-item {
-    min-width: $sideBarWidth  !important;
-    background-color: $subMenuBg  !important;
-
-    &:hover {
-      background-color: $subMenuHover  !important;
-    }
   }
 }
 </style>

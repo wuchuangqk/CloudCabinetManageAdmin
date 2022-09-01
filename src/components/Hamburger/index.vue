@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 0 15px;" @click="appStore.toggleSideBar()">
+  <div class="hamburger-container" @click="appStore.toggleSideBar()">
     <svg :class="{ 'is-active': !appStore.sidebarClosed }" class="hamburger" viewBox="0 0 1024 1024"
       xmlns="http://www.w3.org/2000/svg" width="64" height="64">
       <path
@@ -33,5 +33,13 @@ const appStore = useAppStore()
 
 .hamburger.is-active {
   transform: rotate(180deg);
+}
+
+.hamburger-container {
+  padding: 0 10px;
+  margin-right: 8px;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 </style>

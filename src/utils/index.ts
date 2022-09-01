@@ -8,3 +8,12 @@ import { appName } from '../setting'
 export const getPageTitle = (pageTitle: string) => {
   return pageTitle ? `${pageTitle} - ${appName}` : appName
 }
+
+/**
+ * 读取assets下的图片
+ * @param name 图片路径 如404.png或icon/home.png
+ * @returns 
+ */
+export const loadImg = (imgPath: string) => {
+  return new URL(`../assets/${imgPath}`, import.meta.url).href
+}

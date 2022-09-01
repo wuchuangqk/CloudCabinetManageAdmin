@@ -39,9 +39,10 @@ const interceptor = (to: RouteLocationNormalized) => {
 
   // 检查是否有用户的权限信息
   if (!permissionStore) permissionStore = usePermissionStore()
-  console.log('isComplete', permissionStore.isComplete)
   if (!permissionStore.isComplete) {
     permissionStore.setAppRoutes()
+    // 刷新路由
+    return to.fullPath
   }
 };
 

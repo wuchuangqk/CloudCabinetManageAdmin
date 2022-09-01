@@ -30,7 +30,7 @@ const key = computed(() => {
 <style lang="scss" scoped>
 .app-main {
   padding-left: var(--sidebar-width);
-  padding-top: 80px;
+  padding-top: 84px;
   transition: padding-left .28s;
   position: relative;
 }

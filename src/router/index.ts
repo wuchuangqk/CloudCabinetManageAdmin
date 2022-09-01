@@ -5,7 +5,20 @@ import Layout from '@/components/Layout/index.vue'
 export const publicRoutes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/test/index'
+    redirect: '/index'
+  },
+  {
+    path: '/index',
+    name: 'index',
+    meta: { title: '首页', icon: 'user', notExpend: true },
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'index-child',
+        component: () => import('@/pages/test/t3.vue'),
+      },
+    ]
   },
   {
     path: '/login',
@@ -15,15 +28,21 @@ export const publicRoutes: RouteRecordRaw[] = [
   {
     path: "/test",
     name: 'test',
-    meta: { title: '公共页面1', icon: 'user' },
+    meta: { title: '站点管理', icon: 'user' },
     redirect: '/test/index',
     component: Layout,
     children: [
       {
         path: 'index',
         name: 'test-index',
-        meta: { title: '公共页面1-1', icon: 'user' },
+        meta: { title: '站点备案' },
         component: () => import('@/pages/test/index.vue'),
+      },
+      {
+        path: 'index2',
+        name: 'test-index2',
+        meta: { title: '柜体方案配置' },
+        component: () => import('@/pages/test/index2.vue'),
       }
     ]
   },
@@ -48,6 +67,19 @@ export const publicRoutes: RouteRecordRaw[] = [
       }
     ]
   },
+  {
+    path: "/error",
+    name: 'error',
+    redirect: '/error/404',
+    component: Layout,
+    children: [
+      {
+        path: '404',
+        name: 'error-404',
+        component: () => import('@/pages/error/404.vue'),
+      }
+    ]
+  }
 ];
 
 // 私有路由,只对有权限的用户开放
@@ -70,17 +102,9 @@ export const privateRoutes: RouteRecordRaw[] = [
 
 // 404
 export const notMatchRoute: RouteRecordRaw = {
-  path: "/:pathMatch(.*)*",
+  path: "/:pathMatch(.*)",
   name: 'not-match',
-  redirect: '/404',
-  component: Layout,
-  children: [
-    {
-      path: '/404',
-      name: 'not-match-index',
-      component: () => import('@/pages/error/404.vue'),
-    }
-  ]
+  redirect: '/error/404',
 }
 
 export const router = createRouter({

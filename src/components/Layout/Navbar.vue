@@ -1,13 +1,26 @@
 <template>
   <div class="navbar">
     <div class="head-wrap">
-      <Hamburger />
-      <Breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
+      <Hamburger class="hover-effect" />
+      <Breadcrumb />
       <div class="right">
-        <el-button>退出</el-button>
+        <el-dropdown>
+          <div class="right-item hover-effect">
+            <span>管理员</span>
+            <el-icon class="user-icon">
+              <CaretBottom />
+            </el-icon>
+          </div>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item :icon="Lock">修改密码</el-dropdown-item>
+              <el-dropdown-item divided :icon="SwitchButton">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
     </div>
-
+    <TagsView />
   </div>
 </template>
 
@@ -16,6 +29,8 @@ import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
 import { useRouter, useRoute } from 'vue-router'
 import usePermissionStore from '@/store/permission'
+import { SwitchButton, Lock, CaretBottom } from '@element-plus/icons-vue'
+import TagsView from './components/TagsView/index.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -48,71 +63,38 @@ const logout = async () => {
   .head-wrap {
     display: flex;
     align-items: center;
+    height: 50px;
   }
 
   .right {
     flex: 1;
-  }
-
-  .breadcrumb-container {
-    float: left;
-  }
-
-  .errLog-container {
-    display: inline-block;
-    vertical-align: top;
-  }
-
-  .right-menu {
-    float: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     height: 100%;
-    line-height: 50px;
+    // padding-right: 20px;
 
-    &:focus {
-      outline: none;
-    }
-
-    .right-menu-item {
-      display: inline-block;
-      padding: 0 8px;
-      height: 100%;
-      font-size: 18px;
+    .right-item {
+      padding: 0 10px;
+      height: 50px;
+      line-height: 50px;
       color: #5a5e66;
-      vertical-align: text-bottom;
-
-      &.hover-effect {
-        cursor: pointer;
-        transition: background .3s;
-
-        &:hover {
-          background: rgba(0, 0, 0, .025)
-        }
-      }
     }
 
-    .avatar-container {
-      margin-right: 30px;
-
-      .avatar-wrapper {
-        margin-top: 5px;
-        position: relative;
-
-        .user-avatar {
-          cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-        }
-
-        .el-icon-caret-bottom {
-          cursor: pointer;
-          position: absolute;
-          right: -20px;
-          top: 25px;
-          font-size: 12px;
-        }
-      }
+    .user-icon {
+      margin-left: 5px;
+      vertical-align: text-top;
     }
   }
+
+  .hover-effect {
+    cursor: pointer;
+    transition: background .2s;
+
+    &:hover {
+      background: #f6f6f6;
+    }
+  }
+
 }
 </style>

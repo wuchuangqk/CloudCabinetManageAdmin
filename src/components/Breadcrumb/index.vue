@@ -1,24 +1,16 @@
 <template>
-  <el-breadcrumb class="app-breadcrumb" separator="/">
-    <transition-group name="breadcrumb">
-      <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
-        <span v-if="item.redirect === 'noRedirect' || index == levelList.length - 1" class="no-redirect">{{
-            item.meta.title
-        }}</span>
-        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
-      </el-breadcrumb-item>
-    </transition-group>
+  <el-breadcrumb class="app-breadcrumb" :separator-icon="ArrowRight">
+    <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path" :to="item.path">{{ item.meta.title }}
+    </el-breadcrumb-item>
   </el-breadcrumb>
 </template>
 
 <script lang="ts" setup>
-import { compile } from 'path-to-regexp'
 import { onMounted, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
+import { ArrowRight } from '@element-plus/icons-vue'
 
 const levelList = ref()
-
-const router = useRouter()
 const route = useRoute()
 watch(route, () => {
   if (route.path.startsWith('/redirect/')) {
@@ -27,12 +19,11 @@ watch(route, () => {
   getBreadcrumb()
 })
 const getBreadcrumb = () => {
-  // only show routes with meta.title
   let matched: any = route.matched.filter(item => item.meta && item.meta.title)
   const first = matched[0]
 
   if (!isDashboard(first)) {
-    matched = [{ path: '/dashboard', meta: { title: 'Dashboard' } }].concat(matched)
+    matched = [{ path: '/', meta: { title: '首页' } }].concat(matched)
   }
 
   levelList.value = matched.filter((item: any) => item.meta && item.meta.title && item.meta.breadcrumb !== false)
@@ -42,36 +33,11 @@ const isDashboard = (route: any) => {
   if (!name) {
     return false
   }
-  return name.trim().toLocaleLowerCase() === 'Dashboard'.toLocaleLowerCase()
-}
-const pathCompile = (path: string) => {
-  const { params } = route
-  var toPath = compile(path)
-  return toPath(params)
-}
-const handleLink = (item: any) => {
-  const { redirect, path } = item
-  if (redirect) {
-    router.push(redirect)
-    return
-  }
-  router.push(pathCompile(path))
+  return name === 'index'
 }
 onMounted(() => {
   getBreadcrumb()
 })
 </script>
-
 <style lang="scss" scoped>
-.app-breadcrumb.el-breadcrumb {
-  display: inline-block;
-  font-size: 14px;
-  line-height: 50px;
-  margin-left: 8px;
-
-  .no-redirect {
-    color: #97a8be;
-    cursor: text;
-  }
-}
 </style>

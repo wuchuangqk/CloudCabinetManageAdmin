@@ -1,29 +1,38 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { RouteRecordRaw } from 'vue-router'
+import { RouteLocationNormalizedLoaded } from 'vue-router'
+
+export interface IView {
+  path: string // 路由地址
+  title: string // 路由标题
+  name: string // 路由名称
+  meta: any
+}
 
 const useTagsStore = defineStore('tags', () => {
-  const visitedViews = ref<any[]>([])
+  const tags = ref<IView[]>([])
+  const visitedViews = ref<IView[]>([])
   const cachedViews = ref<string[]>([])
-  const addView = (view: RouteRecordRaw) => {
+  const addView = (view: RouteLocationNormalizedLoaded) => {
     addVisitedView(view)
     addCachedView(view)
   }
-  const addVisitedView = (view: RouteRecordRaw) => {
+  const addVisitedView = (view: RouteLocationNormalizedLoaded) => {
     if (visitedViews.value.some(v => v.path === view.path)) return
-    visitedViews.value.push(
-      Object.assign({}, view, {
-        title: view?.meta?.title || 'no-name'
-      })
-    )
+    visitedViews.value.push({
+      path: view.path,
+      title: (view?.meta?.title || '未命名') as string,
+      name: view.name as string,
+      meta: view?.meta
+    })
   }
   const addCachedView = (view: any) => {
-    if (cachedViews.value.includes(view.name)) return
-    if (!view.meta.noCache) {
-      cachedViews.value.push(view.name)
-    }
+    // if (cachedViews.value.includes(view.name)) return
+    // if (!view.meta.noCache) {
+    //   cachedViews.value.push(view.name)
+    // }
   }
-  const delView = (view: RouteRecordRaw) => {
+  const delView = (view: RouteLocationNormalizedLoaded) => {
     return new Promise(resolve => {
       delVisitedView(view)
       delCachedView(view)
@@ -33,7 +42,7 @@ const useTagsStore = defineStore('tags', () => {
       })
     })
   }
-  const delVisitedView = (view: RouteRecordRaw) => {
+  const delVisitedView = (view: RouteLocationNormalizedLoaded) => {
     return new Promise(resolve => {
       for (const [i, v] of visitedViews.value.entries()) {
         if (v.path === view.path) {
@@ -51,7 +60,7 @@ const useTagsStore = defineStore('tags', () => {
       resolve([...cachedViews.value])
     })
   }
-  const delOthersViews = (view: RouteRecordRaw) => {
+  const delOthersViews = (view: RouteLocationNormalizedLoaded) => {
     return new Promise(resolve => {
       delOthersVisitedViews(view)
       delOthersCachedViews(view)
@@ -61,7 +70,7 @@ const useTagsStore = defineStore('tags', () => {
       })
     })
   }
-  const delOthersVisitedViews = (view: RouteRecordRaw) => {
+  const delOthersVisitedViews = (view: RouteLocationNormalizedLoaded) => {
     return new Promise(resolve => {
       visitedViews.value = visitedViews.value.filter(v => {
         return v.meta.affix || v.path === view.path
@@ -104,7 +113,7 @@ const useTagsStore = defineStore('tags', () => {
       resolve([...cachedViews.value])
     })
   }
-  const updateVisitedView = (view: RouteRecordRaw) => {
+  const updateVisitedView = (view: RouteLocationNormalizedLoaded) => {
     for (let v of visitedViews.value) {
       if (v.path === view.path) {
         v = Object.assign(v, view)
@@ -116,9 +125,12 @@ const useTagsStore = defineStore('tags', () => {
     visitedViews,
     cachedViews,
     addView,
+    addVisitedView,
     delView,
     delOthersViews,
-    delAllViews
+    delAllViews,
+    delCachedView,
+    updateVisitedView,
   }
 })
 

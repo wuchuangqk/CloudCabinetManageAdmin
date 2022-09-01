@@ -6,6 +6,7 @@
 @import 'element-plus/dist/index.css';
 @import '@mzx_qk/ui/dist/style.css';
 @import 'nprogress/nprogress.css'; // progress bar style
+@import 'element-ui.scss';
 
 body {
   height: 100%;
@@ -13,6 +14,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  background-color: #f5f5f5;
 }
 
 

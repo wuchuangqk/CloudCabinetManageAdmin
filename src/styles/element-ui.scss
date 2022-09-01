@@ -5,6 +5,10 @@
   font-weight: 400 !important;
 }
 
+.el-breadcrumb .el-breadcrumb__item:last-of-type .el-breadcrumb__inner {
+  color: #97a8be;
+}
+
 .el-upload {
   input[type="file"] {
     display: none !important;
