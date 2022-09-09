@@ -12,21 +12,23 @@ const service = axios.create({
 })
 // request拦截器
 service.interceptors.request.use(config => {
+  config.headers = config.headers || {}
   if (localStorage.getItem(CACHE_KEY.TOKEN)) {
     config.headers['Authorization'] = "bearer " + localStorage.getItem(CACHE_KEY.TOKEN)
   }
   if (config.url == "/cdc/version/queryAppVersionList") {
     config.headers.sysId = 1036
   } else {
-    config.headers.sysId = sessionStorage.getItem('sysId')
+    config.headers.sysId = localStorage.getItem(CACHE_KEY.SYS_ID)
   }
-  config.headers.reqSign = sessionStorage.getItem('reqSign')
+  config.headers.reqSign = localStorage.getItem(CACHE_KEY.REQ_SIGN)
   return config
 }, error => {
   console.log(error)
   Promise.reject(error)
 })
 
+// 如果请求返回接口为这几种，错误信息不弹出
 const ignoreUrls = [
   '/cas/applyToBe/checkCompanyCode', // 校验企业名称唯一性
   '/cas/applyToBe/checkCompanyNo', // 校验企业编号唯一性
@@ -42,34 +44,26 @@ const ignoreUrls = [
 service.interceptors.response.use(
   response => {
     // 截取端口号后的url地址
-    let resUrl = response.request.responseURL.split(pathLoad.BASE_API)[1] //process.env.BASE_API
-    if (response.data && response.data.success === false) {
-      // 如果请求返回接口为这几种，错误信息不弹出
-      if (ignoreUrls.includes(resUrl)) {
-        if (response.data.errorCode == 1303) {
-          // removeToken()
-          // router.push({
-          //     path: "/login"
-          // })
-        }
-        return Promise.resolve(response)
-      }
-      // 接口返回信息
-      if (response.data.errorCode == 1303) {
-        // removeToken();
+    let resUrl = response.request.responseURL.split(import.meta.env.VITE_BASE_URL)[1] //process.env.BASE_API
+    const {success,errorCode,errorMsg} = response.data
+    if (success === false) {
+      // 让用户重新登录
+      if (errorCode === 1303) {
+        // removeToken()
         // router.push({
         //     path: "/login"
         // })
-      } else {
-        // Message({
-        //     message: response.data.errorMsg,
-        //     type: 'error',
-        //     duration: 1000
-        // })
       }
-      return Promise.resolve(response)
+      if (!ignoreUrls.includes(resUrl)) {
+        ElMessage({
+          message: errorMsg,
+          type: 'error',
+        })
+      }
+      return Promise.reject(response.data)
+    } else {
+      return response.data
     }
-    return response.data
   },
   error => {
     if (error.response && error.response.data.errorCode == 1303) {
@@ -96,4 +90,32 @@ service.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+export const doGet = (url: string, params?: any, data?: any) => {
+  return service({
+    url,
+    method: 'get',
+    params,
+    data
+  })
+}
+
+export const doPost = (url: string, data?: any, params?: any) => {
+  return service({
+    url,
+    method: 'post',
+    params,
+    data
+  })
+}
+
+export const doDelete = (url: string, params?: any, data?: any) => {
+  return service({
+    url,
+    method: 'delete',
+    params,
+    data
+  })
+}
+
 export default service

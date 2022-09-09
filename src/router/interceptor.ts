@@ -32,10 +32,10 @@ const interceptor = (to: RouteLocationNormalized) => {
     } as RouteLocationRaw
   }
   // 如果用户在已登录的情况下访问登录页面,则导航到首页
-  if (to.path === '/login') {
-    nProgress.done()
-    return { path: '/test' } as RouteLocationRaw
-  }
+  // if (to.path === '/login') {
+  //   nProgress.done()
+  //   return { path: '/test' } as RouteLocationRaw
+  // }
 
   // 检查是否有用户的权限信息
   if (!permissionStore) permissionStore = usePermissionStore()

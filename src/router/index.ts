@@ -23,7 +23,7 @@ export const publicRoutes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/pages/login/login.vue'),
+    component: () => import('@/pages/login/index.vue'),
   },
   {
     path: "/test",
@@ -36,13 +36,13 @@ export const publicRoutes: RouteRecordRaw[] = [
         path: 'index',
         name: 'test-index',
         meta: { title: '站点备案' },
-        component: () => import('@/pages/test/index.vue'),
+        component: () => import('@/pages/offer/subject/index.vue'),
       },
       {
         path: 'index2',
         name: 'test-index2',
         meta: { title: '柜体方案配置' },
-        component: () => import('@/pages/test/index2.vue'),
+        component: () => import('@/pages/offer/subject/index.vue'),
       }
     ]
   },

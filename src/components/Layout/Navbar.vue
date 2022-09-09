@@ -6,7 +6,7 @@
       <div class="right">
         <el-dropdown>
           <div class="right-item hover-effect">
-            <span>管理员</span>
+            <span>{{userStore.userInfo.realName}}</span>
             <el-icon class="user-icon">
               <CaretBottom />
             </el-icon>
@@ -29,12 +29,14 @@ import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
 import { useRouter, useRoute } from 'vue-router'
 import usePermissionStore from '@/store/permission'
+import useUserStore from '@/store/user'
 import { SwitchButton, Lock, CaretBottom } from '@element-plus/icons-vue'
 import TagsView from './TagsView.vue'
 
 const router = useRouter()
 const route = useRoute()
 const permissionStore = usePermissionStore()
+const userStore = useUserStore()
 const doLogout = () => {
   return new Promise(resolve => {
     resolve({})
