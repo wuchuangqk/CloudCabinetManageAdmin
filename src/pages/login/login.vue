@@ -6,11 +6,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { KEY_NAME } from '@/utils/constants'
+import { CACHE_KEY } from '@/utils/constants'
 
 const router = useRouter()
 const login = () => {
-  localStorage.setItem(KEY_NAME.TOKEN, '123')
+  localStorage.setItem(CACHE_KEY.TOKEN, '123')
   router.push('/test')
 }
 </script>

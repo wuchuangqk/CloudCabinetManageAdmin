@@ -1,7 +1,7 @@
 import { RouteLocationNormalized, RouteLocationRaw } from "vue-router";
 import nProgress from "nprogress";
 import { getPageTitle } from "../utils";
-import { KEY_NAME } from "../utils/constants";
+import { CACHE_KEY } from "../utils/constants";
 import router from './index'
 import usePermissionStore from '@/store/permission'
 
@@ -16,8 +16,8 @@ const interceptor = (to: RouteLocationNormalized) => {
   // 设置页面标题
   document.title = getPageTitle(to.meta.title as string)
   // 检查是否有登录凭证
-  const token = localStorage.getItem(KEY_NAME.TOKEN)
-  console.log(token, to.path)
+  const token = localStorage.getItem(CACHE_KEY.TOKEN)
+  // console.log(token, to.path)
   // 未登录
   if (!token) {
     // 检查访问路径是否在白名单里

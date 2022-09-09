@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :model-value="modelValue" title="表单" width="800px">
+  <el-dialog :model-value="modelValue" title="表单" width="800px" :before-close="close" :close-on-click-modal="false">
     <el-form ref="formRef" :model="params" inline>
       <el-form-item label="城市" prop="city">
         <el-input v-model="params.city" />
@@ -20,32 +20,43 @@
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="close">取消</el-button>
-        <el-button type="primary" @click="close">确定</el-button>
+        <el-button type="primary" :loading="loading" @click="submit">确定</el-button>
       </span>
     </template>
   </el-dialog>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
+import { ElMessage } from "element-plus";
 
 defineProps<{
-  modelValue: boolean
-}>()
-const call = defineEmits(['update:modelValue'])
+  modelValue: boolean;
+}>();
+const call = defineEmits(["update:modelValue"]);
 const close = () => {
-  call('update:modelValue', false)
-}
-
+  if (!loading.value) {
+    call("update:modelValue", false);
+  }
+};
+const loading = ref(false);
 const params = ref({
-  city: '',
-  name: '',
-  state: ''
-})
+  city: "",
+  name: "",
+  state: "",
+});
 const options = [
-  { label: '张三', value: 1 },
-  { label: '李四', value: 2 },
-  { label: '王五', value: 3 },
-]
+  { label: "张三", value: 1 },
+  { label: "李四", value: 2 },
+  { label: "王五", value: 3 },
+];
+const submit = () => {
+  loading.value = true;
+  setTimeout(() => {
+    loading.value = false;
+    ElMessage("修改成功");
+    close();
+  }, 2000);
+};
 </script>
 
 <style lang="scss" scoped>

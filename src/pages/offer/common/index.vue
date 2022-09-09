@@ -25,8 +25,11 @@
     </div>
     <div class="card">
       <div class="toolbar">
-        <el-button type="primary" @click="show = true">新增</el-button>
-        <el-button>导出</el-button>
+        <span>查询到{{tableData.length}}条数据</span>
+        <div class="btns">
+          <el-button type="primary" @click="show = true">新增</el-button>
+          <el-button>导出</el-button>
+        </div>
       </div>
       <el-table v-loading="loading" element-loading-text="加载中……" :data="tableData" stripe>
         <el-table-column prop="date" label="共配方" width="100" />
@@ -37,61 +40,64 @@
         <el-table-column prop="name" label="操作人" />
         <el-table-column prop="name" label="操作时间" />
       </el-table>
+      <div class="pagination">
+        <el-pagination background layout="total, sizes, prev, pager, next, jumper" :total="total" />
+      </div>
     </div>
-    <TestForm v-model="show" />
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
-import TestForm from './components/TestForm.vue';
+import { ref } from "vue";
 
 const params = ref({
-  city: '',
-  name: '',
-  state: ''
-})
-const loading = ref(false)
+  city: "",
+  name: "",
+  state: "",
+});
+const loading = ref(false);
 const options = [
-  { label: '张三', value: 1 },
-  { label: '李四', value: 2 },
-  { label: '王五', value: 3 },
-]
+  { label: "张三", value: 1 },
+  { label: "李四", value: 2 },
+  { label: "王五", value: 3 },
+];
+const total = ref(100);
+const pageIndex = ref(1);
 const tableData = ref([
   {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    date: "2016-05-03",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
   },
   {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    date: "2016-05-02",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
   },
   {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    date: "2016-05-04",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
   },
   {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    date: "2016-05-01",
+    name: "Tom",
+    address: "No. 189, Grove St, Los Angeles",
   },
-])
+]);
 const search = () => {
-  loading.value = true
+  loading.value = true;
   setTimeout(() => {
-    loading.value = false
+    loading.value = false;
   }, 2000);
-}
+};
 
-const formRef = ref()
+const formRef = ref();
 const reset = () => {
-  formRef.value.resetFields()
-  search()
-}
+  formRef.value.resetFields();
+  search();
+};
 
-const show = ref(false)
+const show = ref(false);
 </script>
 
 <style lang="scss" scoped>
@@ -106,8 +112,17 @@ const show = ref(false)
 
 .toolbar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
+  .btns {
+    display: flex;
+  }
+}
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
 }
 
 .search {

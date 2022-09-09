@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { router, publicRoutes, privateRoutes, notMatchRoute } from '@/router'
-import { KEY_NAME } from '@/utils/constants'
+import { CACHE_KEY } from '@/utils/constants'
 import { RouteRecordRaw } from 'vue-router'
 
 const usePermissionStore = defineStore('permission', () => {
@@ -10,7 +10,7 @@ const usePermissionStore = defineStore('permission', () => {
   // 动态添加路由
   const setAppRoutes = () => {
     // 根据权限来筛选私有路由
-    const permission = JSON.parse(localStorage.getItem(KEY_NAME.PERMISSION) || '[]')
+    const permission = JSON.parse(localStorage.getItem(CACHE_KEY.PERMISSION) || '[]')
     privateRoutes.forEach((route: RouteRecordRaw) => {
       // 添加到vue-router
       router.addRoute(route)
@@ -24,8 +24,8 @@ const usePermissionStore = defineStore('permission', () => {
   }
   // 重置路由
   const resetAppRoutes = () => {
-    localStorage.removeItem(KEY_NAME.TOKEN)
-    localStorage.removeItem(KEY_NAME.USER_INFO)
+    localStorage.removeItem(CACHE_KEY.TOKEN)
+    localStorage.removeItem(CACHE_KEY.USER_INFO)
     // 移除权限菜单
     privateRoutes.forEach((route: RouteRecordRaw) => {
       route.name && router.removeRoute(route.name)

@@ -47,23 +47,23 @@ export const publicRoutes: RouteRecordRaw[] = [
     ]
   },
   {
-    path: "/test1",
-    name: 'test1',
+    path: "/offer",
+    name: 'offer',
     meta: { title: '报价管理', icon: 'user' },
-    redirect: '/test1/index',
+    redirect: '/offer/index',
     component: Layout,
     children: [
       {
-        path: 'index',
-        name: 'test2',
+        path: 'subject',
+        name: 'offer-subject',
         meta: { title: '业务报价科目维护', icon: 'user' },
-        component: () => import('@/pages/test/index.vue'),
+        component: () => import('@/pages/offer/subject/index.vue'),
       },
       {
-        path: 'index2',
-        name: 'test3',
+        path: 'common',
+        name: 'offer-common',
         meta: { title: '共配报价管理', icon: 'user' },
-        component: () => import('@/pages/test/index.vue'),
+        component: () => import('@/pages/offer/common/index.vue'),
       }
     ]
   },

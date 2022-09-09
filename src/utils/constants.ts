@@ -1,7 +1,7 @@
 /**
  * localStorage的键名
  */
-export const KEY_NAME = {
+export const CACHE_KEY = {
   /**
    * 登录凭证
    */

@@ -33,5 +33,6 @@ const key = computed(() => {
   padding-top: 84px;
   transition: padding-left .28s;
   position: relative;
+  overflow: hidden;
 }
 </style>
