@@ -92,11 +92,11 @@ const activeMenu = computed(() => {
     background-color: #0960bd;
   }
 
-  ::v-deep(.el-sub-menu__title:hover) {
+  :deep(.el-sub-menu__title:hover) {
     color: var(--el-menu-active-color);
   }
 
-  ::v-deep(.el-sub-menu.is-active .el-sub-menu__title) {
+  :deep(.el-sub-menu.is-active .el-sub-menu__title) {
     color: var(--el-menu-active-color);
   }
 

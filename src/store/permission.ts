@@ -11,13 +11,15 @@ const usePermissionStore = defineStore('permission', () => {
   const setAppRoutes = () => {
     // 根据权限来筛选私有路由
     const permission = JSON.parse(localStorage.getItem(CACHE_KEY.PERMISSION) || '[]')
+    // 移除404
+    router.removeRoute('not-match')
     privateRoutes.forEach((route: RouteRecordRaw) => {
       // 添加到vue-router
       router.addRoute(route)
       // 添加到左侧菜单
       appRoutes.value.push(route)
     })
-    // 添加404
+    // 404追加到最后
     router.addRoute(notMatchRoute)
     // 标记权限路由配置完成
     isComplete.value = true
@@ -30,8 +32,6 @@ const usePermissionStore = defineStore('permission', () => {
     privateRoutes.forEach((route: RouteRecordRaw) => {
       route.name && router.removeRoute(route.name)
     })
-    // 移除404
-    router.removeRoute('not-match')
     // 重置左侧菜单
     appRoutes.value = publicRoutes
     isComplete.value = false

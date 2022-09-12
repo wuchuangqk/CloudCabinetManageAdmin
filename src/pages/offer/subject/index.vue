@@ -25,24 +25,27 @@
     </div>
     <div class="card">
       <div class="toolbar">
-        <span>查询到{{tableData.length}}条数据</span>
+        <span class="fs-16">查询到 {{total}} 条数据</span>
         <div class="btns">
           <el-button type="primary" @click="show = true">新增</el-button>
           <el-button>导出</el-button>
         </div>
       </div>
-      <el-table v-loading="loading" element-loading-text="加载中……" :data="tableData" stripe>
-        <el-table-column prop="date" label="共配方" width="100" />
-        <el-table-column prop="name" label="城市" width="100" />
+      <el-table v-loading="loading" element-loading-text="加载中……" :data="tableData">
+        <el-table-column prop="businessName" label="业务类型" />
+        <el-table-column prop="subName" label="报价科目" />
         <el-table-column prop="address" label="站点" />
-        <el-table-column prop="name" label="报价详情" />
-        <el-table-column prop="name" label="状态" />
-        <el-table-column prop="name" label="操作人" />
-        <el-table-column prop="name" label="操作时间" />
+        <el-table-column prop="statusText" label="状态" />
+        <el-table-column prop="operatorName" label="操作人" />
+        <el-table-column prop="operatorDatetime" label="操作时间" />
+        <el-table-column label="操作">
+          <template #default>
+            <el-button link type="primary">编辑</el-button>
+            <el-button link type="primary">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
-      <div class="pagination">
-        <el-pagination background layout="total, sizes, prev, pager, next, jumper" :total="total" />
-      </div>
+      <Pagination :total="total" @change="pageChange" />
     </div>
     <TestForm v-model="show" />
   </div>
@@ -50,49 +53,39 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import TestForm from "./components/TestForm.vue";
+import Pagination from '@/components/Pagination.vue'
+import { useList, usePage } from "@/composables/index";
+import { doPost } from "@/utils/request";
 
 const params = ref({
-  city: "",
-  name: "",
-  state: "",
+  // city: "",
+  // name: "",
+  // state: "",
+  offset: 0,
+  limit: 10,
 });
-const loading = ref(false);
+const { loading, total, tableData } = useList()
 const options = [
   { label: "张三", value: 1 },
   { label: "李四", value: 2 },
   { label: "王五", value: 3 },
 ];
-const total = ref(100);
-const pageIndex = ref(1);
-const tableData = ref([
-  {
-    date: "2016-05-03",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-02",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-04",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-  {
-    date: "2016-05-01",
-    name: "Tom",
-    address: "No. 189, Grove St, Los Angeles",
-  },
-]);
+
 const search = () => {
   loading.value = true;
-  setTimeout(() => {
-    loading.value = false;
-  }, 2000);
+  params.value.offset = offset.value
+  params.value.limit = limit.value
+  doPost('/cwcs/quotesubject/queryListSubBusRel', params.value).then(res => {
+    res.data.forEach((val: any) => {
+      val.statusText = val.status === 1 ? '开启' : '关闭'
+    })
+    tableData.value = res.data
+    total.value = res.count
+    loading.value = false
+  })
 };
-
+const { offset, limit, pageChange } = usePage(search)
+search()
 const formRef = ref();
 const reset = () => {
   formRef.value.resetFields();
@@ -117,10 +110,12 @@ const show = ref(false);
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+
   .btns {
     display: flex;
   }
 }
+
 .pagination {
   display: flex;
   justify-content: flex-end;

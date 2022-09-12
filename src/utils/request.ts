@@ -1,17 +1,25 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 import { ElMessage } from 'element-plus'
 import { CACHE_KEY } from './constants'
+
+interface Result {
+  errorCode: string;
+  errorMsg: string;
+  success: boolean;
+  count: number;
+  data: any;
+}
 
 const service = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   timeout: 300000, // 请求超时时间
   headers: {
-    timestamp: Date.parse(new Date()) / 1000,
-    reqId: Date.parse(new Date()) / 1000 + 1,
+    timestamp: Date.parse(new Date().toLocaleString()) / 1000,
+    reqId: Date.parse(new Date().toLocaleString()) / 1000 + 1,
   }
 })
 // request拦截器
-service.interceptors.request.use(config => {
+service.interceptors.request.use((config: AxiosRequestConfig) => {
   config.headers = config.headers || {}
   if (localStorage.getItem(CACHE_KEY.TOKEN)) {
     config.headers['Authorization'] = "bearer " + localStorage.getItem(CACHE_KEY.TOKEN)
@@ -19,12 +27,11 @@ service.interceptors.request.use(config => {
   if (config.url == "/cdc/version/queryAppVersionList") {
     config.headers.sysId = 1036
   } else {
-    config.headers.sysId = localStorage.getItem(CACHE_KEY.SYS_ID)
+    config.headers.sysId = localStorage.getItem(CACHE_KEY.SYS_ID) || ''
   }
-  config.headers.reqSign = localStorage.getItem(CACHE_KEY.REQ_SIGN)
+  config.headers.reqSign = localStorage.getItem(CACHE_KEY.REQ_SIGN) || ''
   return config
-}, error => {
-  console.log(error)
+}, (error: AxiosError) => {
   Promise.reject(error)
 })
 
@@ -42,13 +49,13 @@ const ignoreUrls = [
 ]
 // respone拦截器
 service.interceptors.response.use(
-  response => {
+  (response: AxiosResponse) => {
     // 截取端口号后的url地址
     let resUrl = response.request.responseURL.split(import.meta.env.VITE_BASE_URL)[1] //process.env.BASE_API
-    const {success,errorCode,errorMsg} = response.data
+    const { success, errorCode, errorMsg } = response.data
     if (success === false) {
       // 让用户重新登录
-      if (errorCode === 1303) {
+      if (errorCode == 1303) {
         // removeToken()
         // router.push({
         //     path: "/login"
@@ -65,7 +72,7 @@ service.interceptors.response.use(
       return response.data
     }
   },
-  error => {
+  (error: AxiosError) => {
     if (error.response && error.response.data.errorCode == 1303) {
       // removeToken();
       // router.push({
@@ -91,31 +98,16 @@ service.interceptors.response.use(
   }
 )
 
-export const doGet = (url: string, params?: any, data?: any) => {
-  return service({
-    url,
-    method: 'get',
-    params,
-    data
-  })
+export const doGet = (url: string, params?: any, data?: any): Promise<Result> => {
+  return service.request({ url, method: 'get', params, data })
 }
 
-export const doPost = (url: string, data?: any, params?: any) => {
-  return service({
-    url,
-    method: 'post',
-    params,
-    data
-  })
+export const doPost = (url: string, data?: any, params?: any): Promise<Result> => {
+  return service.request({ url, method: 'post', params, data })
 }
 
-export const doDelete = (url: string, params?: any, data?: any) => {
-  return service({
-    url,
-    method: 'delete',
-    params,
-    data
-  })
+export const doDelete = (url: string, params?: any, data?: any): Promise<Result> => {
+  return service.request({ url, method: 'delete', params, data })
 }
 
 export default service

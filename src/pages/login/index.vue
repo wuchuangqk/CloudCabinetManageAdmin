@@ -21,12 +21,9 @@ import useUserStore from '@/store/user'
 const router = useRouter()
 const userStore = useUserStore()
 const login = () => {
-  // localStorage.setItem(CACHE_KEY.TOKEN, '123')
-  // router.push('/test')
   localStorage.setItem(CACHE_KEY.SYS_ID, String(SYS_ID.OFFICIAL))
   localStorage.setItem(CACHE_KEY.REQ_SIGN, REQ_SIGN.OFFICIAL)
   doPost('/cgs/login', formData.value).then((res: any) => {
-    console.log(res)
     localStorage.setItem(CACHE_KEY.USER_INFO, JSON.stringify(res.accountInfo))
     userStore.setUserInfo(res.accountInfo)
     localStorage.setItem(CACHE_KEY.TOKEN, res.authTokenInfo.access_token)

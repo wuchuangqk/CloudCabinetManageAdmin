@@ -4,7 +4,7 @@
       <Hamburger class="hover-effect" />
       <Breadcrumb />
       <div class="right">
-        <el-dropdown>
+        <el-dropdown @command="handleCommand">
           <div class="right-item hover-effect">
             <span>{{userStore.userInfo.realName}}</span>
             <el-icon class="user-icon">
@@ -13,8 +13,8 @@
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item :icon="Lock">修改密码</el-dropdown-item>
-              <el-dropdown-item divided :icon="SwitchButton">退出登录</el-dropdown-item>
+              <el-dropdown-item :icon="Lock" command="modify">修改密码</el-dropdown-item>
+              <el-dropdown-item divided :icon="SwitchButton" command="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -29,12 +29,13 @@ import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
 import { useRouter, useRoute } from 'vue-router'
 import usePermissionStore from '@/store/permission'
-import useUserStore from '@/store/user'
 import { SwitchButton, Lock, CaretBottom } from '@element-plus/icons-vue'
 import TagsView from './TagsView.vue'
+import { CACHE_KEY } from '@/utils/constants'
+import useUserStore from '@/store/user'
+import { ElMessageBox } from 'element-plus'
 
 const router = useRouter()
-const route = useRoute()
 const permissionStore = usePermissionStore()
 const userStore = useUserStore()
 const doLogout = () => {
@@ -42,11 +43,37 @@ const doLogout = () => {
     resolve({})
   })
 }
-const logout = async () => {
-  doLogout().then(() => {
-    permissionStore.resetAppRoutes()
-    router.push('/login')
-  })
+const logout = () => {
+  ElMessageBox.confirm(
+    '确定退出登录吗？',
+    '提示',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+      doLogout().then(() => {
+        permissionStore.resetAppRoutes()
+        localStorage.removeItem(CACHE_KEY.USER_INFO)
+        localStorage.removeItem(CACHE_KEY.TOKEN)
+        userStore.setUserInfo({})
+        router.push('/login')
+      })
+    })
+    .catch(() => {
+    })
+}
+
+const handleCommand = (command: string) => {
+  switch (command) {
+    case 'modify':
+      break
+    case 'logout':
+      logout()
+      break
+  }
 }
 </script>
 
