@@ -76,7 +76,7 @@ const activeMenu = computed(() => {
 .sidebar {
   transition: width 0.28s;
   width: var(--sidebar-width);
-  background-color: var(--menu-bg);
+  background-color: var(--el-menu-bg-color);
   height: 100%;
   position: fixed;
   font-size: 0px;
@@ -89,7 +89,7 @@ const activeMenu = computed(() => {
   flex-direction: column;
 
   .el-menu-item.is-active {
-    background-color: #0960bd;
+    background-color: var(--el-menu-hover-bg-color);
   }
 
   :deep(.el-sub-menu__title:hover) {

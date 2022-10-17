@@ -52,3 +52,13 @@ export const REQ_SIGN = {
    */
   PARTNER: '7178941fac6e45d8a6b14be790fd1dba',
 }
+
+/**
+ * 错误码
+ */
+export const ERROR_CODE = {
+  /**
+   * 认证信息失败
+   */
+  EXPIRE: '1303'
+}

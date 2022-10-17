@@ -50,8 +50,8 @@
         <el-pagination background layout="total, sizes, prev, pager, next, jumper" :total="total"
           v-model:current-page="pageIndex" />
       </div> -->
-      <Pagination :total="total" @change="pageChange" />
     </div>
+    <Pagination :params="params" @change="search" />
   </div>
 </template>
 <script setup lang="ts">
@@ -65,7 +65,8 @@ const params = ref({
   // name: "",
   // state: "",
   offset: 0,
-  limit: 10,
+  limit: 15,
+  total: 0,
 });
 const { loading, total, tableData } = useList()
 
@@ -121,11 +122,7 @@ const show = ref(false);
   }
 }
 
-.pagination {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 16px;
-}
+
 
 .search {
   padding: 16px;

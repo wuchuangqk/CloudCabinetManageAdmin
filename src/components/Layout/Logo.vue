@@ -16,13 +16,13 @@ import { appName } from '@/setting'
 defineProps<{
   collapse: boolean
 }>()
-const logo = 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+const logo = 'vite.svg'
 </script>
 
 <style lang="scss" scoped>
 .sidebar-logo-container {
   position: relative;
-  background: var(--menu-bg);
+  background: var(--el-menu-bg-color);
   padding-left: 10px;
   overflow: hidden;
 
@@ -43,7 +43,7 @@ const logo = 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.pn
       color: #fff;
       font-weight: 600;
       line-height: 50px;
-      font-size: 14px;
+      font-size: 18px;
       margin: 0;
     }
   }

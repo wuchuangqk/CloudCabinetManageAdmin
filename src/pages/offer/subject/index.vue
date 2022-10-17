@@ -2,36 +2,39 @@
   <div class="page">
     <div class="search">
       <el-form ref="formRef" :model="params" inline>
-        <el-form-item label="城市" prop="city">
-          <el-input v-model="params.city" />
-        </el-form-item>
-        <el-form-item label="站点" prop="name">
-          <el-select v-model="params.name">
-            <el-option v-for="option in options" :key="option.value" :label="option.label" :value="option.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="状态" prop="state">
-          <el-select v-model="params.state">
-            <el-option v-for="option in options" :key="option.value" :label="option.label" :value="option.value">
+        <el-form-item label="状态" prop="status">
+          <el-select v-model="params.status">
+            <el-option
+              v-for="option in options"
+              :key="option.value"
+              :label="option.label"
+              :value="option.value"
+            >
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
           <el-button @click="reset">重置</el-button>
-          <el-button type="primary" :loading="loading" @click="search">查询</el-button>
+          <el-button type="primary" :loading="loading" @click="fetchData(true)">
+            查询
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="card">
       <div class="toolbar">
-        <span class="fs-16">查询到 {{total}} 条数据</span>
+        <span class="fs-16">查询到 {{ params.total }} 条数据</span>
         <div class="btns">
           <el-button type="primary" @click="show = true">新增</el-button>
           <el-button>导出</el-button>
         </div>
       </div>
-      <el-table v-loading="loading" element-loading-text="加载中……" :data="tableData">
+      <el-table
+        v-loading="loading"
+        element-loading-text="加载中……"
+        :data="tableData"
+        stripe
+      >
         <el-table-column prop="businessName" label="业务类型" />
         <el-table-column prop="subName" label="报价科目" />
         <el-table-column prop="address" label="站点" />
@@ -45,52 +48,52 @@
           </template>
         </el-table-column>
       </el-table>
-      <Pagination :total="total" @change="pageChange" />
+      <Pagination :params="params" @change="fetchData(true)" />
     </div>
     <TestForm v-model="show" />
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref, reactive } from "vue";
 import TestForm from "./components/TestForm.vue";
-import Pagination from '@/components/Pagination.vue'
-import { useList, usePage } from "@/composables/index";
-import { doPost } from "@/utils/request";
+import Pagination from "@/components/Pagination.vue";
+import { quteoSubjectTableApi } from "@/api/yungui/offer/business.js";
 
-const params = ref({
-  // city: "",
-  // name: "",
-  // state: "",
-  offset: 0,
-  limit: 10,
+onMounted(() => {
+  fetchData();
 });
-const { loading, total, tableData } = useList()
+const params = reactive({
+  status: '',
+  offset: 0,
+  limit: 15,
+  total: 0,
+});
 const options = [
-  { label: "张三", value: 1 },
-  { label: "李四", value: 2 },
-  { label: "王五", value: 3 },
+  { label: "全部", value: "" },
+  { label: "开启", value: 1 },
+  { label: "关闭", value: 0 },
 ];
-
-const search = () => {
+const loading = ref(false);
+const tableData = ref([]);
+const fetchData = async (search: boolean = false) => {
   loading.value = true;
-  params.value.offset = offset.value
-  params.value.limit = limit.value
-  doPost('/cwcs/quotesubject/queryListSubBusRel', params.value).then(res => {
-    res.data.forEach((val: any) => {
-      val.statusText = val.status === 1 ? '开启' : '关闭'
-    })
-    tableData.value = res.data
-    total.value = res.count
-    loading.value = false
-  })
+  if (search) {
+    params.offset = 0
+  }
+  const res = await quteoSubjectTableApi(params);
+  res.data = res.data || []
+  res.data.forEach((val: any) => {
+    val.statusText = val.status === 1 ? "开启" : "关闭";
+  });
+  tableData.value = res.data;
+  params.total = res.count;
+  loading.value = false;
 };
-const { offset, limit, pageChange } = usePage(search)
-search()
 const formRef = ref();
 const reset = () => {
   formRef.value.resetFields();
-  search();
-};
+  fetchData(true)
+}
 
 const show = ref(false);
 </script>

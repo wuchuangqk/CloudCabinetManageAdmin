@@ -1,6 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 import { ElMessage } from 'element-plus'
-import { CACHE_KEY } from './constants'
+import { CACHE_KEY, ERROR_CODE } from './constants'
+import { useUser } from '@/composables/index'
+import { useRouter } from 'vue-router'
 
 interface Result {
   errorCode: string;
@@ -9,6 +11,9 @@ interface Result {
   count: number;
   data: any;
 }
+
+const { logout } = useUser()
+const router = useRouter()
 
 const service = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -55,11 +60,9 @@ service.interceptors.response.use(
     const { success, errorCode, errorMsg } = response.data
     if (success === false) {
       // 让用户重新登录
-      if (errorCode == 1303) {
-        // removeToken()
-        // router.push({
-        //     path: "/login"
-        // })
+      if (errorCode === ERROR_CODE.EXPIRE) {
+        logout()
+        router.push('/login')
       }
       if (!ignoreUrls.includes(resUrl)) {
         ElMessage({
@@ -73,26 +76,19 @@ service.interceptors.response.use(
     }
   },
   (error: AxiosError) => {
-    if (error.response && error.response.data.errorCode == 1303) {
-      // removeToken();
-      // router.push({
-      //     path: "/login"
-      // })
-    } else {
-      var str = error + ''
-      if (str.search('timeout') !== -1) { // 超时error
-        ElMessage({
-          message: '请求超时，请稍后再试',
-          type: 'error',
-          duration: 1000
-        })
-      } else {
-        ElMessage({
-          message: '请求超时，请稍后再试',
-          type: 'error',
-          duration: 1000
-        })
+    console.log('error', error)
+    if (error.response) {
+      const { errorCode } = error.response.data as any
+      if (errorCode === ERROR_CODE.EXPIRE) {
+        logout()
+        router.push('/login')
       }
+    } else {
+      ElMessage({
+        message: '请求超时，请稍后再试',
+        type: 'error',
+        duration: 1000
+      })
     }
     return Promise.reject(error)
   }

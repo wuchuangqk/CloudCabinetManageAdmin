@@ -269,9 +269,9 @@ onBeforeUnmount(() => {
     // }
 
     &.router-link-active {
-      background-color: #0960bd;
+      background-color: var(--el-color-primary);
       color: #fff;
-      border-color: #0960bd;
+      border-color: var(--el-color-primary);
 
       &::before {
         content: '';

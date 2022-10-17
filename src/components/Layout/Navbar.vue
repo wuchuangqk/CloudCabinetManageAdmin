@@ -27,22 +27,16 @@
 <script lang="ts" setup>
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
-import { useRouter, useRoute } from 'vue-router'
-import usePermissionStore from '@/store/permission'
 import { SwitchButton, Lock, CaretBottom } from '@element-plus/icons-vue'
 import TagsView from './TagsView.vue'
-import { CACHE_KEY } from '@/utils/constants'
 import useUserStore from '@/store/user'
 import { ElMessageBox } from 'element-plus'
+import { useUser } from '@/composables/index'
+import { useRouter } from 'vue-router'
 
-const router = useRouter()
-const permissionStore = usePermissionStore()
 const userStore = useUserStore()
-const doLogout = () => {
-  return new Promise(resolve => {
-    resolve({})
-  })
-}
+const router = useRouter()
+const { logout: doLogout } = useUser()
 const logout = () => {
   ElMessageBox.confirm(
     '确定退出登录吗？',
@@ -54,13 +48,8 @@ const logout = () => {
     }
   )
     .then(() => {
-      doLogout().then(() => {
-        permissionStore.resetAppRoutes()
-        localStorage.removeItem(CACHE_KEY.USER_INFO)
-        localStorage.removeItem(CACHE_KEY.TOKEN)
-        userStore.setUserInfo({})
-        router.push('/login')
-      })
+      doLogout()
+      router.push('/login')
     })
     .catch(() => {
     })
