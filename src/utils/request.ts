@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios'
 import { ElMessage } from 'element-plus'
 import { CACHE_KEY, ERROR_CODE } from './constants'
 import { useUser } from '@/composables/index'
-import { useRouter } from 'vue-router'
+import router from '@/router/index'
 
 interface Result {
   errorCode: string;
@@ -13,8 +13,6 @@ interface Result {
 }
 
 const { logout } = useUser()
-const router = useRouter()
-
 const service = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   timeout: 300000, // 请求超时时间
@@ -59,16 +57,13 @@ service.interceptors.response.use(
     let resUrl = response.request.responseURL.split(import.meta.env.VITE_BASE_URL)[1] //process.env.BASE_API
     const { success, errorCode, errorMsg } = response.data
     if (success === false) {
+      if (!ignoreUrls.includes(resUrl)) {
+        ElMessage({ message: errorMsg, type: 'error', })
+      }
       // 让用户重新登录
       if (errorCode === ERROR_CODE.EXPIRE) {
         logout()
         router.push('/login')
-      }
-      if (!ignoreUrls.includes(resUrl)) {
-        ElMessage({
-          message: errorMsg,
-          type: 'error',
-        })
       }
       return Promise.reject(response.data)
     } else {
@@ -76,9 +71,9 @@ service.interceptors.response.use(
     }
   },
   (error: AxiosError) => {
-    console.log('error', error)
     if (error.response) {
-      const { errorCode } = error.response.data as any
+      const { errorCode, errorMsg } = error.response.data as any
+      ElMessage({ message: errorMsg || '未知错误', type: 'error', })
       if (errorCode === ERROR_CODE.EXPIRE) {
         logout()
         router.push('/login')

@@ -180,21 +180,21 @@ const toLastView = (visitedViews, view) => {
 }
 const openMenu = (tag, e) => {
   return
-  const menuMinWidth = 105
-  const offsetLeft = $el.getBoundingClientRect().left // container margin left
-  const offsetWidth = $el.offsetWidth // container width
-  const maxLeft = offsetWidth - menuMinWidth // left boundary
-  const left = e.clientX - offsetLeft + 15 // 15: margin right
+  // const menuMinWidth = 105
+  // const offsetLeft = $el.getBoundingClientRect().left // container margin left
+  // const offsetWidth = $el.offsetWidth // container width
+  // const maxLeft = offsetWidth - menuMinWidth // left boundary
+  // const left = e.clientX - offsetLeft + 15 // 15: margin right
 
-  if (left > maxLeft) {
-    left = maxLeft
-  } else {
-    left = left
-  }
+  // if (left > maxLeft) {
+  //   left = maxLeft
+  // } else {
+  //   left = left
+  // }
 
-  top = e.clientY
-  visible = true
-  selectedTag = tag
+  // top = e.clientY
+  // visible = true
+  // selectedTag = tag
 }
 const closeMenu = () => {
   visible.value = false

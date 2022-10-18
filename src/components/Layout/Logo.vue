@@ -16,7 +16,7 @@ import { appName } from '@/setting'
 defineProps<{
   collapse: boolean
 }>()
-const logo = 'vite.svg'
+const logo = '/vite.svg'
 </script>
 
 <style lang="scss" scoped>

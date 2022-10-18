@@ -68,6 +68,21 @@ export const publicRoutes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: "/order",
+    name: 'order',
+    meta: { title: '云柜订单管理', icon: 'user' },
+    redirect: '/order/index',
+    component: Layout,
+    children: [
+      {
+        path: 'send',
+        name: 'order-send',
+        meta: { title: '投柜订单管理', icon: 'user' },
+        component: () => import('@/pages/order/send/index.vue'),
+      },
+    ]
+  },
+  {
     path: "/error",
     name: 'error',
     redirect: '/error/404',

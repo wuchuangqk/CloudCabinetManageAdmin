@@ -1,8 +1,8 @@
 <template>
   <div class="pagination">
-    <el-pagination background layout="total, sizes, prev, pager, next, jumper" :total="total"
-      v-model:current-page="current" v-model:page-size="size" :page-sizes="pageSizes" @size-change="change"
-      @current-change="change" />
+    <el-pagination background layout="total, sizes, prev, pager, next, jumper" :total="params.total"
+      v-model:current-page="pageCurrent" v-model:page-size="pageSize" :page-sizes="pageSizes" hide-on-single-page
+      @size-change="sizeChange" @current-change="change" />
   </div>
 </template>
 <script lang="ts">
@@ -12,21 +12,25 @@ export default {
 </script>
 <script setup lang="ts">
 import { ref } from 'vue'
-
-withDefaults(defineProps<{
-  offset: number,
-  limit: number,
-  total: number
-}>(), {
-  total: 0
-})
+interface IParams {
+  offset: number
+  limit: number
+  total: number // 总条数
+}
+const props = defineProps<{ params: IParams }>()
 const call = defineEmits(['change'])
-const current = ref(1);
-const size = ref(15)
+const pageCurrent = ref(1);
+const pageSize = ref(15)
 const pageSizes = [15, 30, 50, 100]
-
 const change = () => {
-  call('change', current.value - 1, size.value)
+  props.params.limit = pageSize.value
+  props.params.offset = (pageCurrent.value - 1) * pageSize.value
+  call('change')
+}
+const sizeChange = () => {
+  // 变更每页条数后，页码重置回第一页
+  pageCurrent.value = 1
+  change()
 }
 </script>
 

@@ -1,15 +1,10 @@
 <template>
   <div class="page">
     <div class="search">
-      <el-form ref="formRef" :model="params" inline>
+      <el-form ref="searchRef" :model="params" inline>
         <el-form-item label="状态" prop="status">
           <el-select v-model="params.status">
-            <el-option
-              v-for="option in options"
-              :key="option.value"
-              :label="option.label"
-              :value="option.value"
-            >
+            <el-option v-for="option in options" :key="option.value" :label="option.label" :value="option.value">
             </el-option>
           </el-select>
         </el-form-item>
@@ -29,12 +24,7 @@
           <el-button>导出</el-button>
         </div>
       </div>
-      <el-table
-        v-loading="loading"
-        element-loading-text="加载中……"
-        :data="tableData"
-        stripe
-      >
+      <el-table v-loading="loading" element-loading-text="请稍候" :data="tableData" stripe>
         <el-table-column prop="businessName" label="业务类型" />
         <el-table-column prop="subName" label="报价科目" />
         <el-table-column prop="address" label="站点" />
@@ -42,15 +32,15 @@
         <el-table-column prop="operatorName" label="操作人" />
         <el-table-column prop="operatorDatetime" label="操作时间" />
         <el-table-column label="操作">
-          <template #default>
-            <el-button link type="primary">编辑</el-button>
-            <el-button link type="primary">删除</el-button>
+          <template #default="scope">
+            <el-button link type="primary" @click="edit(scope.row)">编辑</el-button>
+            <el-button link type="primary" @click="del(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <Pagination :params="params" @change="fetchData(true)" />
+      <Pagination :params="params" @change="fetchData" />
     </div>
-    <TestForm v-model="show" />
+    <TestForm ref="formRef" v-model="show" />
   </div>
 </template>
 <script setup lang="ts">
@@ -58,6 +48,7 @@ import { onMounted, ref, reactive } from "vue";
 import TestForm from "./components/TestForm.vue";
 import Pagination from "@/components/Pagination.vue";
 import { quteoSubjectTableApi } from "@/api/yungui/offer/business.js";
+import { ElMessageBox, ElMessage } from 'element-plus'
 
 onMounted(() => {
   fetchData();
@@ -68,18 +59,11 @@ const params = reactive({
   limit: 15,
   total: 0,
 });
-const options = [
-  { label: "全部", value: "" },
-  { label: "开启", value: 1 },
-  { label: "关闭", value: 0 },
-];
 const loading = ref(false);
 const tableData = ref([]);
 const fetchData = async (search: boolean = false) => {
   loading.value = true;
-  if (search) {
-    params.offset = 0
-  }
+  if (search) params.offset = 0
   const res = await quteoSubjectTableApi(params);
   res.data = res.data || []
   res.data.forEach((val: any) => {
@@ -89,13 +73,28 @@ const fetchData = async (search: boolean = false) => {
   params.total = res.count;
   loading.value = false;
 };
-const formRef = ref();
+const searchRef = ref();
 const reset = () => {
-  formRef.value.resetFields();
+  searchRef.value.resetFields();
   fetchData(true)
 }
-
+const options = [
+  { label: "全部", value: "" },
+  { label: "开启", value: 1 },
+  { label: "关闭", value: 0 },
+];
 const show = ref(false);
+const formRef = ref()
+const edit = (rowVal) => {
+  console.log(formRef.value)
+  formRef.value && formRef.value.echo(rowVal)
+  show.value = true
+}
+const del = async (rowVal) => {
+  await ElMessageBox.confirm('确认删除吗？')
+  ElMessage.success('删除成功')
+  fetchData()
+}
 </script>
 
 <style lang="scss" scoped>

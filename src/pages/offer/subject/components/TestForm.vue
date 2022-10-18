@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :model-value="modelValue"
-    title="表单"
+    :title="title"
     width="600px"
     :before-close="close"
     :close-on-click-modal="false"
@@ -55,7 +55,7 @@
   </el-dialog>
 </template>
 <script setup lang="ts">
-import { onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { ElMessage } from "element-plus";
 import {
   quteoSubjectList,
@@ -75,7 +75,7 @@ const close = () => {
 };
 onMounted(() => {
   quteoSubjectList().then((res) => {
-    busIdOptions.value = res.data.map((val) => {
+    subIdOptions.value = res.data.map((val) => {
       return {
         label: val.subName,
         value: val.id,
@@ -83,7 +83,7 @@ onMounted(() => {
     });
   });
   quteoBusTypeList().then((res) => {
-    subIdOptions.value = res.data.map((val) => {
+    busIdOptions.value = res.data.map((val) => {
       return {
         label: val.businessName,
         value: val.id,
@@ -98,6 +98,10 @@ const formData = reactive({
   subId: "", // 报价科目
   status: 1, // 是否开启
 });
+const isEdit = ref(false)
+const title = computed(() => {
+  return isEdit.value ? '编辑' : '新增'
+})
 const rules: FormRules = {
   busId: [
     {
@@ -119,16 +123,25 @@ const busIdOptions = ref<IOption[]>([]);
 const subIdOptions = ref<IOption[]>([]);
 const submit = async () => {
   if (!formRef.value || loading.value) return;
-  try {
-    await formRef.value.validate();
-    loading.value = true;
-    setTimeout(() => {
-      loading.value = false;
-      ElMessage("修改成功");
-      close();
-    }, 2000);
-  } catch (error) {}
+  await formRef.value.validate();
+  loading.value = true;
+  setTimeout(() => {
+    loading.value = false;
+    ElMessage("修改成功");
+    close();
+  }, 2000);
 };
+const echo = (val) => {
+  isEdit.value = true
+  formData.busId = val.busId
+  formData.subId = val.subId + ''
+  formData.status = val.status
+  console.log(formData);
+  
+}
+defineExpose({
+  echo
+})
 </script>
 
 <style lang="scss" scoped>
