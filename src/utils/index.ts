@@ -17,3 +17,14 @@ export const getPageTitle = (pageTitle: string) => {
 export const loadImg = (imgPath: string) => {
   return new URL(`../assets/${imgPath}`, import.meta.url).href
 }
+
+/**
+ * 格式化
+ * @param arr 
+ * @param value 
+ * @returns 
+ */
+export const fmt = (arr: IOption[], value: number | string) => {
+  const result = arr.find(v => v.value === value)
+  return result ? result.label : ''
+}

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="show" title="订单详情" width="600px" :close-on-click-modal="false" id="order-send-detail">
+  <el-dialog v-model="show" title="订单详情" width="700px" :close-on-click-modal="false" id="order-send-detail">
     <el-tabs v-model="activeTab">
       <el-tab-pane label="订单详情" name="detail">
         <div>
@@ -24,6 +24,9 @@
 import { onMounted, reactive, ref } from "vue";
 import { look1 as getOrderDetailAPI, look2 as getOrderLogAPI } from "@/api/yungui/cabinet/order.js";
 
+const props = defineProps<{
+  orderType: string, // 订单类型
+}>()
 onMounted(() => {
 });
 const show = ref(false)

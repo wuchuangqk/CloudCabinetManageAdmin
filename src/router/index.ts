@@ -78,7 +78,19 @@ export const publicRoutes: RouteRecordRaw[] = [
         path: 'send',
         name: 'order-send',
         meta: { title: '投柜订单管理', icon: 'user' },
-        component: () => import('@/pages/order/send/index.vue'),
+        component: () => import('@/pages/order/send.vue'),
+      },
+      {
+        path: 'temporary',
+        name: 'order-temporary',
+        meta: { title: '暂存订单管理', icon: 'user' },
+        component: () => import('@/pages/order/temporary.vue'),
+      },
+      {
+        path: 'ultraviolet',
+        name: 'order-ultraviolet',
+        meta: { title: '紫外灯消杀件', icon: 'user' },
+        component: () => import('@/pages/order/ultraviolet.vue'),
       },
     ]
   },

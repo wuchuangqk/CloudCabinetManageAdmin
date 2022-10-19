@@ -2,14 +2,12 @@
   <div>
     sdfsdfsdfs
     <div>
-      <Tab v-model="current" :items="items" />
     </div>
     <el-button @click="router.push('/ee')">测试</el-button>
   </div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Tab } from '@mzx_qk/ui'
 import { useRouter } from 'vue-router';
 const current = ref(1)
 const items = [

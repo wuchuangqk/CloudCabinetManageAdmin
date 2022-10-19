@@ -11,6 +11,17 @@ export interface IView {
 
 const useTagsStore = defineStore('tags', () => {
   const tags = ref<IView[]>([])
+  const addTag = (route: IView) => {
+    if (tags.value.some((tag) => tag.path === route.path)) return
+    const { meta } = route
+    if (meta && meta.title) {
+      tags.value.push(route)
+    }
+  }
+  const removeTag = (tag: IView) => {
+    
+  }
+
   const visitedViews = ref<IView[]>([])
   const cachedViews = ref<string[]>([])
   const addView = (view: RouteLocationNormalizedLoaded) => {
@@ -124,6 +135,7 @@ const useTagsStore = defineStore('tags', () => {
   return {
     visitedViews,
     cachedViews,
+    tags,
     addView,
     addVisitedView,
     delView,
@@ -131,6 +143,8 @@ const useTagsStore = defineStore('tags', () => {
     delAllViews,
     delCachedView,
     updateVisitedView,
+    addTag,
+    removeTag,
   }
 })
 
