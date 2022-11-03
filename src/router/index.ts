@@ -26,24 +26,24 @@ export const publicRoutes: RouteRecordRaw[] = [
     component: () => import('@/pages/login/index.vue'),
   },
   {
-    path: "/test",
-    name: 'test',
+    path: "/station",
+    name: 'station',
     meta: { title: '站点管理', icon: 'user' },
-    redirect: '/test/index',
+    redirect: '/station/record',
     component: Layout,
     children: [
       {
-        path: 'index',
-        name: 'test-index',
+        path: 'record',
+        name: 'station-record',
         meta: { title: '站点备案' },
-        component: () => import('@/pages/offer/subject/index.vue'),
+        component: () => import('@/pages/station/record/index.vue'),
       },
-      {
-        path: 'index2',
-        name: 'test-index2',
-        meta: { title: '柜体方案配置' },
-        component: () => import('@/pages/offer/subject/index.vue'),
-      }
+      // {
+      //   path: 'index2',
+      //   name: 'test-index2',
+      //   meta: { title: '柜体方案配置' },
+      //   component: () => import('@/pages/offer/subject/index.vue'),
+      // }
     ]
   },
   {
