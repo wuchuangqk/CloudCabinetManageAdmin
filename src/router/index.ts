@@ -16,14 +16,14 @@ export const publicRoutes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'index-child',
-        component: () => import('@/pages/test/t3.vue'),
+        component: () => import('@/views/test/t3.vue'),
       },
     ]
   },
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/pages/login/index.vue'),
+    component: () => import('@/views/login/index.vue'),
   },
   {
     path: "/station",
@@ -36,14 +36,14 @@ export const publicRoutes: RouteRecordRaw[] = [
         path: 'record',
         name: 'station-record',
         meta: { title: '站点备案' },
-        component: () => import('@/pages/station/record/index.vue'),
+        component: () => import('@/views/station/record/index.vue'),
       },
-      // {
-      //   path: 'index2',
-      //   name: 'test-index2',
-      //   meta: { title: '柜体方案配置' },
-      //   component: () => import('@/pages/offer/subject/index.vue'),
-      // }
+      {
+        path: 'setting',
+        name: 'station-setting',
+        meta: { title: '柜体方案配置' },
+        component: () => import('@/views/station/setting/index.vue'),
+      }
     ]
   },
   {
@@ -57,13 +57,13 @@ export const publicRoutes: RouteRecordRaw[] = [
         path: 'subject',
         name: 'offer-subject',
         meta: { title: '业务报价科目维护', icon: 'user' },
-        component: () => import('@/pages/offer/subject/index.vue'),
+        component: () => import('@/views/offer/subject/index.vue'),
       },
       {
         path: 'common',
         name: 'offer-common',
         meta: { title: '共配报价管理', icon: 'user' },
-        component: () => import('@/pages/offer/common/index.vue'),
+        component: () => import('@/views/offer/common/index.vue'),
       }
     ]
   },
@@ -78,19 +78,19 @@ export const publicRoutes: RouteRecordRaw[] = [
         path: 'send',
         name: 'order-send',
         meta: { title: '投柜订单管理', icon: 'user' },
-        component: () => import('@/pages/order/send.vue'),
+        component: () => import('@/views/order/send.vue'),
       },
       {
         path: 'temporary',
         name: 'order-temporary',
         meta: { title: '暂存订单管理', icon: 'user' },
-        component: () => import('@/pages/order/temporary.vue'),
+        component: () => import('@/views/order/temporary.vue'),
       },
       {
         path: 'ultraviolet',
         name: 'order-ultraviolet',
         meta: { title: '紫外灯消杀件', icon: 'user' },
-        component: () => import('@/pages/order/ultraviolet.vue'),
+        component: () => import('@/views/order/ultraviolet.vue'),
       },
     ]
   },
@@ -103,7 +103,7 @@ export const publicRoutes: RouteRecordRaw[] = [
       {
         path: '404',
         name: 'error-404',
-        component: () => import('@/pages/error/404.vue'),
+        component: () => import('@/views/error/404.vue'),
       }
     ]
   }
@@ -121,7 +121,7 @@ export const privateRoutes: RouteRecordRaw[] = [
         path: 't1',
         name: 'private-t1',
         meta: { title: '权限页面1', icon: 'user' },
-        component: () => import('@/pages/test/t1.vue'),
+        component: () => import('@/views/test/t1.vue'),
       }
     ]
   },

@@ -111,5 +111,11 @@ th {
     .el-input {
       width: 200px;
     }
+
+    .btns {
+      display: flex;
+      justify-content: center;
+      padding-bottom: 18px;
+    }
   }
 }
