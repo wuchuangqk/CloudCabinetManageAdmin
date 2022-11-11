@@ -20,7 +20,7 @@ interface IParams {
 const props = defineProps<{ params: IParams }>()
 const call = defineEmits(['change'])
 const pageCurrent = ref(1);
-const pageSize = ref(15)
+const pageSize = ref(2)
 const pageSizes = [15, 30, 50, 100]
 const change = () => {
   props.params.limit = pageSize.value

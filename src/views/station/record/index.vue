@@ -63,17 +63,17 @@
         <el-table-column prop="cabinetCode" label="站点编号" show-overflow-tooltip />
         <el-table-column prop="cabinetName" label="站点名称" show-overflow-tooltip />
         <el-table-column prop="cabinetTypeName" label="类型" show-overflow-tooltip />
-        <el-table-column prop="stationId" label="第三方站点编号" show-overflow-tooltip />
+        <el-table-column prop="stationId" label="第三方站点编号" show-overflow-tooltip width="130" />
         <el-table-column prop="twoSidedFmt" label="单/双面" show-overflow-tooltip />
         <el-table-column prop="remark" label="备注" show-overflow-tooltip />
         <el-table-column prop="cabinetQty" label="柜子数" show-overflow-tooltip />
         <el-table-column prop="duration" label="消杀时长" show-overflow-tooltip />
         <el-table-column prop="mainboard" label="主板编号" show-overflow-tooltip />
-        <el-table-column prop="simcard" label="物联网卡号" show-overflow-tooltip />
+        <el-table-column prop="simcard" label="物联网卡号" show-overflow-tooltip width="100" />
         <el-table-column prop="province" label="省" show-overflow-tooltip />
         <el-table-column prop="city" label="市" show-overflow-tooltip />
         <el-table-column prop="district" label="区" show-overflow-tooltip />
-        <el-table-column prop="community" label="社区/小区" show-overflow-tooltip />
+        <el-table-column prop="community" label="社区/小区" show-overflow-tooltip width="90" />
         <el-table-column prop="address" label="详细地址" show-overflow-tooltip />
         <el-table-column prop="building" label="楼栋" show-overflow-tooltip />
         <el-table-column prop="floor" label="楼层" show-overflow-tooltip />

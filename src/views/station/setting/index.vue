@@ -21,9 +21,15 @@
               <el-input v-model="params.templateName" clearable placeholder="请输入柜体方案名称" />
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <!-- <el-col :span="6">
             <el-form-item label="生产厂商" prop="manufacturers">
               <el-input v-model="params.manufacturers" clearable placeholder="请输入生产厂商" />
+            </el-form-item>
+          </el-col> -->
+          <el-col :span="6">
+            <el-form-item label="生产厂商" prop="manufacturers">
+              <!-- <el-input v-model="params.manufacturers" clearable placeholder="请输入生产厂商" /> -->
+              <RichSelect @trigger="showCabinet" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -42,27 +48,23 @@
       </div>
       <el-table v-loading="loading" element-loading-text="请稍候" :data="tableData" stripe>
         <el-table-column type="selection" label="业务类型" align="center" width="55" />
-        <el-table-column prop="id" label="站点ID" show-overflow-tooltip />
-        <el-table-column prop="cabinetCode" label="站点编号" show-overflow-tooltip />
-        <el-table-column prop="cabinetName" label="站点名称" show-overflow-tooltip />
-        <el-table-column prop="cabinetTypeName" label="类型" show-overflow-tooltip />
-        <el-table-column prop="stationId" label="第三方站点编号" show-overflow-tooltip />
-        <el-table-column prop="twoSidedFmt" label="单/双面" show-overflow-tooltip />
-        <el-table-column prop="remark" label="备注" show-overflow-tooltip />
-        <el-table-column prop="cabinetQty" label="柜子数" show-overflow-tooltip />
-        <el-table-column prop="duration" label="消杀时长" show-overflow-tooltip />
-        <el-table-column prop="mainboard" label="主板编号" show-overflow-tooltip />
-        <el-table-column prop="simcard" label="物联网卡号" show-overflow-tooltip />
-        <el-table-column prop="province" label="省" show-overflow-tooltip />
-        <el-table-column prop="city" label="市" show-overflow-tooltip />
-        <el-table-column prop="district" label="区" show-overflow-tooltip />
-        <el-table-column prop="community" label="社区/小区" show-overflow-tooltip />
-        <el-table-column prop="address" label="详细地址" show-overflow-tooltip />
-        <el-table-column prop="building" label="楼栋" show-overflow-tooltip />
-        <el-table-column prop="floor" label="楼层" show-overflow-tooltip />
-        <el-table-column prop="statusFmt" label="状态" show-overflow-tooltip />
-        <el-table-column prop="isOnlineFmt" label="是否在线" show-overflow-tooltip />
-        <el-table-column prop="operatorName" label="操作人" show-overflow-tooltip />
+        <el-table-column prop="templateTypeFmt" label="单面/双面" show-overflow-tooltip width="100" />
+        <el-table-column prop="templateCode" label="柜体方案编号" show-overflow-tooltip width="120" />
+        <el-table-column prop="templateName" label="柜体方案名称" show-overflow-tooltip width="120" />
+        <el-table-column prop="manufacturers" label="生产厂商" show-overflow-tooltip />
+        <el-table-column prop="quotation" label="对外报价(元)" show-overflow-tooltip width="120" />
+        <el-table-column prop="maxQty" label="大格数量" show-overflow-tooltip />
+        <el-table-column prop="maxNum" label="大格序号" show-overflow-tooltip />
+        <el-table-column prop="normalQty" label="中格数量" show-overflow-tooltip />
+        <el-table-column prop="normalNum" label="中格序号" show-overflow-tooltip />
+        <el-table-column prop="minQty" label="小格数量" show-overflow-tooltip />
+        <el-table-column prop="minNum" label="小格序号" show-overflow-tooltip />
+        <el-table-column prop="bindingQty" label="捆扎带数量" show-overflow-tooltip width="120" />
+        <el-table-column prop="bindingNum" label="捆扎带序号" show-overflow-tooltip width="120" />
+        <el-table-column prop="handcartQty" label="搬运车数量" show-overflow-tooltip width="120" />
+        <el-table-column prop="handcartNum" label="搬运车序号" show-overflow-tooltip width="120" />
+        <el-table-column prop="operatorName" label="操作人(最后一次)" show-overflow-tooltip width="140" />
+        <el-table-column prop="operatorDate" label="操作时间(最后一次)" show-overflow-tooltip width="160" />
         <el-table-column label="操作" width="150">
           <template #default="scope">
             <el-button link type="primary" @click="edit(scope.row)">编辑</el-button>
@@ -71,6 +73,7 @@
         </el-table-column>
       </el-table>
       <Pagination :params="params" @change="fetchData" />
+      <CabinetFilter ref="cabinetFilterRef" />
     </div>
   </div>
 </template>
@@ -80,9 +83,11 @@ import Pagination from "@/components/Pagination.vue";
 import { table as getRecordListAPI, del, add, edit } from "@/api/yungui/station/stationCabinet/index";
 import { ElMessageBox, ElMessage } from 'element-plus'
 import { fmt } from '@/utils/index'
+import RichSelect from '@/components/RichSelect.vue'
+import CabinetFilter from '@/components/CabinetFilter.vue'
 
 onMounted(() => {
-  // fetchData();
+  fetchData();
 });
 const params = reactive({
   offset: 0,
@@ -101,8 +106,6 @@ const fetchData = async (search: boolean = false) => {
   const res = await getRecordListAPI(params);
   res.data = res.data || []
   res.data.forEach((val: any) => {
-    // val.statusFmt = fmt(statusOptions, val.status)
-    // val.isOnlineFmt = fmt(isOnlineOptions, val.isOnline)
     val.templateTypeFmt = val.templateType === 1 ? '单面' : '双面'
   });
   tableData.value = res.data;
@@ -127,8 +130,11 @@ const del = async (rowVal) => {
   ElMessage.success('删除成功')
   fetchData()
 }
+
+const cabinetFilterRef = ref()
+const showCabinet = () => {
+  cabinetFilterRef.value && cabinetFilterRef.value.open()
+}
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
