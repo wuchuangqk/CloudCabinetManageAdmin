@@ -28,8 +28,7 @@
           </el-col> -->
           <el-col :span="6">
             <el-form-item label="生产厂商" prop="manufacturers">
-              <!-- <el-input v-model="params.manufacturers" clearable placeholder="请输入生产厂商" /> -->
-              <RichSelect @trigger="showCabinet" />
+              <RichSelect v-model="params.manufacturers" :options="cabinetOptions" @trigger="showCabinet" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -73,7 +72,7 @@
         </el-table-column>
       </el-table>
       <Pagination :params="params" @change="fetchData" />
-      <CabinetFilter ref="cabinetFilterRef" />
+      <CabinetFilter ref="cabinetFilterRef" @select="(result) => cabinetOptions = result" />
     </div>
   </div>
 </template>
@@ -135,6 +134,7 @@ const cabinetFilterRef = ref()
 const showCabinet = () => {
   cabinetFilterRef.value && cabinetFilterRef.value.open()
 }
+const cabinetOptions = shallowRef([])
 </script>
 
 <style lang="scss" scoped></style>

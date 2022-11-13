@@ -28,3 +28,18 @@ export const fmt = (arr: IOption[], value: number | string) => {
   const result = arr.find(v => v.value === value)
   return result ? result.label : ''
 }
+
+/**
+ * 检查数组里有没有这个对象
+ * @param arr 数组
+ * @param target 对象
+ * @param field id字段
+ * @returns 
+ */
+export const includes = (arr: object[], target: object, field: string = 'id') => {
+  const index = arr.findIndex(val => val[field] === target[field])
+  return {
+    truest: index !== -1,
+    index
+  }
+}

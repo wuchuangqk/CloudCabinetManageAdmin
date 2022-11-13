@@ -25,5 +25,9 @@
 .el-table {
   --el-table-header-bg-color: #f4b79a; // 表头背景颜色
   --el-table-header-text-color: #fff; // 表头文字颜色
-  --el-table-text-color: #545454;// 表格文字颜色
+  --el-table-text-color: #545454; // 表格文字颜色
+}
+
+.el-dialog {
+  --el-dialog-margin-top: 10vh;
 }

@@ -1,6 +1,6 @@
 <template>
-  <div class="flex">
-    <el-select v-model="arr" clearable placeholder="请选择" multiple>
+  <div class="flex rich-select">
+    <el-select v-model="target" placeholder="请选择" :multiple="multiple" @change="change">
       <el-option v-for="option in options" :key="option.value" :label="option.label" :value="option.value" />
     </el-select>
     <div class="trigger" @click="call('trigger')">
@@ -16,31 +16,31 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import { ref } from "vue";
-import areaData from "@/utils/areaData";
-import { loadImg } from "@/utils";
 import { Filter } from '@element-plus/icons-vue'
+import { ref, watch } from 'vue';
 
-const props = withDefaults(
-  defineProps<{
-    multiple: boolean; // 多选
-    clearable: boolean; // 显示清除按钮
-    modelValue: Array<any>
-  }>(), {
+const props = withDefaults(defineProps<{
+  multiple: boolean; // 多选
+  modelValue: Array<any> | any,
+  options: IOption[],
+}>(), {
   multiple: false,
-  clearable: true,
-  modelValue: () => [],
 });
 const call = defineEmits(["update:modelValue", 'trigger']);
+const target = ref()
 const change = () => {
-
+  call('update:modelValue', target.value)
 };
-const arr = []
-const options: IOption[] = []
+watch(() => props.options, (newVal: IOption[]) => {
+  if (!newVal.some(val => val.value === target.value)) {
+    target.value = ''
+    change()
+  }
+})
 </script>
 
 <style lang="scss" scoped>
-:deep(.el-input) {
+.rich-select :deep(.el-input) {
   width: auto;
 }
 
