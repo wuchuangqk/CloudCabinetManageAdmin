@@ -17,11 +17,12 @@
     </div>
     <div class="toolbar">
       <p>
-        <span class="fs-16">查询到 {{ params.total }} 条数据，</span>
-        <span class="fs-16">已选择 {{ selectedRows.length }} 条数据</span>
+        <span class="fs-14">查询到 {{ params.total }} 条数据，</span>
+        <span class="fs-14">已选择 {{ selectedRows.length }} 条数据</span>
       </p>
       <div class="btns">
         <el-button @click="reset">重置</el-button>
+        <!-- @todo 在第二页点查询，分页状态还停留在第二页（其实是第一页的数据） -->
         <el-button type="primary" :loading="loading" @click="fetchData(true)">查询</el-button>
       </div>
     </div>

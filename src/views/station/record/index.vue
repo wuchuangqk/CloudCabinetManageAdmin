@@ -52,7 +52,7 @@
     </div>
     <div class="card">
       <div class="toolbar">
-        <span class="fs-16">查询到 {{ params.total }} 条数据</span>
+        <span class="fs-14">查询到 {{ params.total }} 条数据</span>
         <div class="btns">
           <el-button type="primary" @click="show = true">新增</el-button>
         </div>
